@@ -10,11 +10,20 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene view;
+    private static Pane  pane;
 
     @Override
     public void start(Stage window) throws Exception {
-        Pane pane = new Pane();
+        //Setup main view:
+        pane = new Pane();
         view = new Scene(pane);
+
+
+
+
+
+
+        //Assign view to window and show window:
         window.setScene(view);
         window.show();
     }
