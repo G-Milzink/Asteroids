@@ -48,8 +48,6 @@ public class App extends Application {
         canvas.getChildren().add(player.getEntity());
         asteroids.forEach(asteroid -> canvas.getChildren().add(asteroid.getEntity()));
 
-        
-
         // Assign view to window and show window:
         window.setScene(gameWorld);
         window.show();
