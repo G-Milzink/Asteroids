@@ -71,9 +71,11 @@ public class App extends Application {
                 if (animationControl.isKeyPressed(KeyCode.SPACE)) {
                     fireBullet();
                 }
-
+                //Execute all movement:
                 player.move();
                 asteroids.forEach(asteroid -> asteroid.move());
+                bullets.forEach(bullet -> bullet.move());
+
 
                 asteroids.forEach(asteroid -> {
                     if (player.collide(asteroid)) {
@@ -91,6 +93,9 @@ public class App extends Application {
                 (int) player.getEntity().getTranslateY());
                 bullet.getEntity().setRotate(player.getEntity().getRotate());
                 bullets.add(bullet);
+
+        bullet.accelerate();
+        bullet.setMovement(bullet.getMovement().normalize().multiply(3));
 
         canvas.getChildren().add(bullet.getEntity());
     }
