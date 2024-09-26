@@ -25,9 +25,12 @@ public class App extends Application {
         canvas = new Pane();
         canvas.setPrefSize(screenWidth, screenHeight);
         canvas.setStyle("-fx-background-color: white;");
+
         gameWorld = new Scene(canvas);
+
         // Initialize player:
         Ship player = new Ship(screenWidth / 2, screenHeight / 2);
+
         // Initialize an asteroid:
         List<Asteroid> asteroids = new ArrayList<>();
         for (int i = 0; i < initialNrOfAsteroids; i++) {
@@ -38,6 +41,8 @@ public class App extends Application {
 
         // Initialize animationControl:
         AnimationControl animationControl = new AnimationControl(gameWorld);
+
+        //Add entities to canvas:
         canvas.getChildren().add(player.getEntity());
         asteroids.forEach(asteroid -> canvas.getChildren().add(asteroid.getEntity()));
 
