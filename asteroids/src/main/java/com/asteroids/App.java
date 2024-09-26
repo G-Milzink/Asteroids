@@ -22,10 +22,13 @@ public class App extends Application {
         canvas.setStyle("-fx-background-color: white;");
         //Initialize player:
         Ship player = new Ship(screenWidth/2, screenHeight/2);
+        //Initialize an asteroid:
+        Asteroid asteroid = new Asteroid(50, 50);
 
 
 
         canvas.getChildren().add(player.getEntity());
+        canvas.getChildren().add(asteroid.getEntity());
 
 
 
