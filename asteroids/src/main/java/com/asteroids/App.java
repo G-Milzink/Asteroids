@@ -25,15 +25,20 @@ public class App extends Application {
         Ship player = new Ship(screenWidth / 2, screenHeight / 2);
         // Initialize an asteroid:
         Asteroid asteroid = new Asteroid(50, 50);
-        //Initialize animationControl:
+        asteroid.turnRight();
+        asteroid.turnRight();
+        asteroid.accelerate();
+        asteroid.accelerate();
+        asteroid.accelerate();
+        asteroid.accelerate();
+        // Initialize animationControl:
         AnimationControl animationControl = new AnimationControl(gameWorld);
-        
 
         canvas.getChildren().add(player.getEntity());
         canvas.getChildren().add(asteroid.getEntity());
 
         // Assign view to window and show window:
-        
+
         window.setScene(gameWorld);
         window.show();
 
@@ -49,7 +54,16 @@ public class App extends Application {
                     player.turnRight();
                 }
 
-                // ship.move();
+                if (animationControl.isKeyPressed(KeyCode.UP)) {
+                    player.accelerate();
+                }
+
+                player.move();
+                asteroid.move();
+
+                if (player.collide(asteroid)) {
+                    stop();
+                }
             }
 
         }.start();
