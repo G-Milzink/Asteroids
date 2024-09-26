@@ -68,7 +68,7 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE)) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size()<3) {
                     fireBullet();
                 }
                 //Execute all movement:
