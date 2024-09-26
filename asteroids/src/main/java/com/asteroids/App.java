@@ -26,7 +26,7 @@ public class App extends Application {
         // Initialize an asteroid:
         Asteroid asteroid = new Asteroid(50, 50);
         //Initialize animationControl:
-        AnimationControl animationControl = new AnimationControl(gameWorld, player);
+        AnimationControl animationControl = new AnimationControl(gameWorld);
         
 
         canvas.getChildren().add(player.getEntity());
