@@ -3,6 +3,7 @@ package com.asteroids;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javafx.animation.AnimationTimer;
@@ -10,6 +11,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -19,6 +22,9 @@ public class App extends Application {
     public static int screenWidth = 800;
     public static int screenHeight = 600;
     private static int initialNrOfAsteroids = 8;
+    private static Text scoreBoard = new Text(20,40,"Score: 0");
+    private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
+    private static AtomicInteger score = new AtomicInteger();
 
     List<Bullet> bullets = new ArrayList<>();
     Ship player = new Ship(screenWidth / 2, screenHeight / 2);
@@ -29,6 +35,8 @@ public class App extends Application {
         canvas = new Pane();
         canvas.setPrefSize(screenWidth, screenHeight);
         canvas.setStyle("-fx-background-color: white;");
+
+        scoreBoard.setFont(gameFont);
 
         gameWorld = new Scene(canvas);
 
@@ -44,6 +52,7 @@ public class App extends Application {
         AnimationControl animationControl = new AnimationControl(gameWorld);
 
         // Add entities to canvas:
+        canvas.getChildren().add(scoreBoard);
         canvas.getChildren().add(player.getEntity());
         asteroids.forEach(asteroid -> canvas.getChildren().add(asteroid.getEntity()));
 
@@ -92,6 +101,9 @@ public class App extends Application {
                             asteroid.setAlive(false);
                         }
                     });
+                    if (!bullet.isAlive()) {
+                        scoreBoard.setText("Score: " + score.addAndGet(100));
+                    }
                 });
 
                 bullets.stream()
