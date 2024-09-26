@@ -8,6 +8,7 @@ public class Entity {
 
     private Polygon entity;
     private Point2D movement;
+    private boolean alive = true;
 
     public Entity(Polygon polygon, int x, int y) {
         this.entity = polygon;
@@ -71,6 +72,14 @@ public class Entity {
 
     public void setMovement(Point2D movement) {
         this.movement = movement;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public boolean isAlive() {
+        return alive;
     }
 
 }

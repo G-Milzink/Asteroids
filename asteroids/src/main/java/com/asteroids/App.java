@@ -3,6 +3,7 @@ package com.asteroids;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -30,8 +31,6 @@ public class App extends Application {
         canvas.setStyle("-fx-background-color: white;");
 
         gameWorld = new Scene(canvas);
-
-        
 
         // Initialize an asteroid:
         List<Asteroid> asteroids = new ArrayList<>();
@@ -68,20 +67,47 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size()<3) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 3) {
                     fireBullet();
                 }
-                //Execute all movement:
+
+                // Execute all movement:
                 player.move();
                 asteroids.forEach(asteroid -> asteroid.move());
                 bullets.forEach(bullet -> bullet.move());
 
-
+                // Check for collisions:
+                // Ship collision:
                 asteroids.forEach(asteroid -> {
                     if (player.collide(asteroid)) {
                         stop();
                     }
                 });
+
+                // Bullet Collisions:
+                bullets.forEach(bullet -> {
+                    asteroids.forEach(asteroid -> {
+                        if (bullet.collide(asteroid)) {
+                            bullet.setAlive(false);
+                            asteroid.setAlive(false);
+                        }
+                    });
+                });
+
+                bullets.stream()
+                        .filter(bullet -> !bullet.isAlive())
+                        .forEach(bullet -> canvas.getChildren().remove(bullet.getEntity()));
+                bullets.removeAll(bullets.stream()
+                        .filter(bullet -> !bullet.isAlive())
+                        .collect(Collectors.toList()));
+
+                asteroids.stream()
+                        .filter(asteroid -> !asteroid.isAlive())
+                        .forEach(asteroid -> canvas.getChildren().remove(asteroid.getEntity()));
+                asteroids.removeAll(asteroids.stream()
+                        .filter(asteroid -> !asteroid.isAlive())
+                        .collect(Collectors.toList()));
+
             }
 
         }.start();
@@ -91,8 +117,9 @@ public class App extends Application {
     public void fireBullet() {
         Bullet bullet = new Bullet((int) player.getEntity().getTranslateX(),
                 (int) player.getEntity().getTranslateY());
-                bullet.getEntity().setRotate(player.getEntity().getRotate());
-                bullets.add(bullet);
+
+        bullet.getEntity().setRotate(player.getEntity().getRotate());
+        bullets.add(bullet);
 
         bullet.accelerate();
         bullet.setMovement(bullet.getMovement().normalize().multiply(3));
