@@ -1,5 +1,9 @@
 package com.asteroids;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,6 +17,7 @@ public class App extends Application {
     private static Pane canvas;
     private static int screenWidth = 800;
     private static int screenHeight = 600;
+    private static int initialNrOfAsteroids = 8;
 
     @Override
     public void start(Stage window) throws Exception {
@@ -24,21 +29,19 @@ public class App extends Application {
         // Initialize player:
         Ship player = new Ship(screenWidth / 2, screenHeight / 2);
         // Initialize an asteroid:
-        Asteroid asteroid = new Asteroid(50, 50);
-        asteroid.turnRight();
-        asteroid.turnRight();
-        asteroid.accelerate();
-        asteroid.accelerate();
-        asteroid.accelerate();
-        asteroid.accelerate();
+        List<Asteroid> asteroids = new ArrayList<>();
+        for (int i = 0; i < initialNrOfAsteroids; i++) {
+            Random rnd = new Random();
+            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth/3), rnd.nextInt(screenHeight/3));
+            asteroids.add(asteroid);
+        }
+
         // Initialize animationControl:
         AnimationControl animationControl = new AnimationControl(gameWorld);
-
         canvas.getChildren().add(player.getEntity());
-        canvas.getChildren().add(asteroid.getEntity());
+        asteroids.forEach(asteroid -> canvas.getChildren().add(asteroid.getEntity()));
 
         // Assign view to window and show window:
-
         window.setScene(gameWorld);
         window.show();
 
@@ -59,11 +62,13 @@ public class App extends Application {
                 }
 
                 player.move();
-                asteroid.move();
+                asteroids.forEach(asteroid -> asteroid.move());
 
-                if (player.collide(asteroid)) {
-                    stop();
-                }
+                asteroids.forEach(asteroid -> {
+                    if (player.collide(asteroid)) {
+                        stop();
+                    }
+                });
             }
 
         }.start();
