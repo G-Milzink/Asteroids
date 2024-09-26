@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    private static Scene view;
+    private static Scene gameWorld;
     private static Pane canvas;
     private static int screenWidth = 800;
     private static int screenHeight = 600;
@@ -27,8 +27,8 @@ public class App extends Application {
         canvas.getChildren().add(asteroid.getEntity());
 
         // Assign view to window and show window:
-        view = new Scene(canvas);
-        window.setScene(view);
+        gameWorld = new Scene(canvas);
+        window.setScene(gameWorld);
         window.show();
     }
 
