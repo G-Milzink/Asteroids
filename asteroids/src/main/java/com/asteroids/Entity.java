@@ -54,8 +54,8 @@ public class Entity {
         double changeX = Math.cos(Math.toRadians(this.entity.getRotate()));
         double changeY = Math.sin(Math.toRadians(this.entity.getRotate()));
 
-        changeX *= 0.05;
-        changeY *= 0.05;
+        changeX *= 0.025;
+        changeY *= 0.025;
 
         this.movement = this.movement.add(changeX, changeY);
     }

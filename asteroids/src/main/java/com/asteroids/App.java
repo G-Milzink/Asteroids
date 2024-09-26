@@ -19,6 +19,9 @@ public class App extends Application {
     public static int screenHeight = 600;
     private static int initialNrOfAsteroids = 8;
 
+    List<Bullet> bullets = new ArrayList<>();
+    Ship player = new Ship(screenWidth / 2, screenHeight / 2);
+
     @Override
     public void start(Stage window) throws Exception {
         // Setup main view:
@@ -28,23 +31,24 @@ public class App extends Application {
 
         gameWorld = new Scene(canvas);
 
-        // Initialize player:
-        Ship player = new Ship(screenWidth / 2, screenHeight / 2);
+        
 
         // Initialize an asteroid:
         List<Asteroid> asteroids = new ArrayList<>();
         for (int i = 0; i < initialNrOfAsteroids; i++) {
             Random rnd = new Random();
-            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth/3), rnd.nextInt(screenHeight));
+            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight));
             asteroids.add(asteroid);
         }
 
         // Initialize animationControl:
         AnimationControl animationControl = new AnimationControl(gameWorld);
 
-        //Add entities to canvas:
+        // Add entities to canvas:
         canvas.getChildren().add(player.getEntity());
         asteroids.forEach(asteroid -> canvas.getChildren().add(asteroid.getEntity()));
+
+        
 
         // Assign view to window and show window:
         window.setScene(gameWorld);
@@ -66,6 +70,10 @@ public class App extends Application {
                     player.accelerate();
                 }
 
+                if (animationControl.isKeyPressed(KeyCode.SPACE)) {
+                    fireBullet();
+                }
+
                 player.move();
                 asteroids.forEach(asteroid -> asteroid.move());
 
@@ -77,6 +85,16 @@ public class App extends Application {
             }
 
         }.start();
+    }
+
+    // Handle Bullets:
+    public void fireBullet() {
+        Bullet bullet = new Bullet((int) player.getEntity().getTranslateX(),
+                (int) player.getEntity().getTranslateY());
+                bullet.getEntity().setRotate(player.getEntity().getRotate());
+                bullets.add(bullet);
+
+        canvas.getChildren().add(bullet.getEntity());
     }
 
     public static void main(String[] args) {
