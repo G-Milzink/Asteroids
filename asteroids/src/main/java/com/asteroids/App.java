@@ -1,7 +1,9 @@
 package com.asteroids;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -18,18 +20,39 @@ public class App extends Application {
         canvas = new Pane();
         canvas.setPrefSize(screenWidth, screenHeight);
         canvas.setStyle("-fx-background-color: white;");
+        gameWorld = new Scene(canvas);
         // Initialize player:
         Ship player = new Ship(screenWidth / 2, screenHeight / 2);
         // Initialize an asteroid:
         Asteroid asteroid = new Asteroid(50, 50);
+        //Initialize animationControl:
+        AnimationControl animationControl = new AnimationControl(gameWorld, player);
+        
 
         canvas.getChildren().add(player.getEntity());
         canvas.getChildren().add(asteroid.getEntity());
 
         // Assign view to window and show window:
-        gameWorld = new Scene(canvas);
+        
         window.setScene(gameWorld);
         window.show();
+
+        new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                if (animationControl.isKeyPressed(KeyCode.LEFT)) {
+                    player.turnLeft();
+                }
+
+                if (animationControl.isKeyPressed(KeyCode.RIGHT)) {
+                    player.turnRight();
+                }
+
+                // ship.move();
+            }
+
+        }.start();
     }
 
     public static void main(String[] args) {

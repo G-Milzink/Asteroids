@@ -20,12 +20,20 @@ public class Entity {
         return entity;
     }
 
+    public void turnLeft() {
+        this.entity.setRotate(this.entity.getRotate() - 5);
+    }
+
+    public void turnRight() {
+        this.entity.setRotate(this.entity.getRotate() + 5);
+    }
+
     public void move() {
         this.entity.setTranslateX(this.entity.getTranslateX()+this.movement.getX());
         this.entity.setTranslateY(this.entity.getTranslateY()+this.movement.getY());
     }
 
-    public void accelrate() {
+    public void accelerate() {
         double changeX = Math.cos(Math.toRadians(this.entity.getRotate()));
         double changeY = Math.sin(Math.toRadians(this.entity.getRotate()));
 
