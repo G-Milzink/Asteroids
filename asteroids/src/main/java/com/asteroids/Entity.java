@@ -30,8 +30,24 @@ public class Entity {
     }
 
     public void move() {
-        this.entity.setTranslateX(this.entity.getTranslateX()+this.movement.getX());
-        this.entity.setTranslateY(this.entity.getTranslateY()+this.movement.getY());
+        this.entity.setTranslateX(this.entity.getTranslateX() + this.movement.getX());
+        this.entity.setTranslateY(this.entity.getTranslateY() + this.movement.getY());
+
+        if (this.entity.getTranslateX() < 0) {
+            this.entity.setTranslateX(this.entity.getTranslateX() + App.screenWidth);
+        }
+
+        if (this.entity.getTranslateX() > App.screenWidth) {
+            this.entity.setTranslateX(this.entity.getTranslateX() % App.screenWidth);
+        }
+
+        if (this.entity.getTranslateY() < 0) {
+            this.entity.setTranslateY(this.entity.getTranslateY() + App.screenHeight);
+        }
+
+        if (this.entity.getTranslateY() > App.screenHeight) {
+            this.entity.setTranslateY(this.entity.getTranslateY() % App.screenHeight);
+        }
     }
 
     public void accelerate() {
@@ -41,7 +57,7 @@ public class Entity {
         changeX *= 0.05;
         changeY *= 0.05;
 
-        this.movement = this.movement.add(changeX,changeY);
+        this.movement = this.movement.add(changeX, changeY);
     }
 
     public boolean collide(Entity other) {

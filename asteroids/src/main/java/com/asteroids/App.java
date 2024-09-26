@@ -15,8 +15,8 @@ public class App extends Application {
 
     private static Scene gameWorld;
     private static Pane canvas;
-    private static int screenWidth = 800;
-    private static int screenHeight = 600;
+    public static int screenWidth = 800;
+    public static int screenHeight = 600;
     private static int initialNrOfAsteroids = 8;
 
     @Override
@@ -35,7 +35,7 @@ public class App extends Application {
         List<Asteroid> asteroids = new ArrayList<>();
         for (int i = 0; i < initialNrOfAsteroids; i++) {
             Random rnd = new Random();
-            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth/3), rnd.nextInt(screenHeight/3));
+            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth/3), rnd.nextInt(screenHeight));
             asteroids.add(asteroid);
         }
 
