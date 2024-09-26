@@ -10,13 +10,11 @@ public class AnimationControl {
 
     private Map<KeyCode, Boolean> pressedKeys;
     private Scene gameWorld;
-    private Ship player;
 
 
-    public AnimationControl(Scene gameWorld, Ship player) {
+    public AnimationControl(Scene gameWorld) {
         this.pressedKeys = new HashMap<>();
         this.gameWorld = gameWorld;
-        this.player = player;
 
         this.gameWorld.setOnKeyPressed(event -> {
             pressedKeys.put(event.getCode(), Boolean.TRUE);
