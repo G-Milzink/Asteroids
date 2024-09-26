@@ -22,7 +22,7 @@ public class App extends Application {
     public static int screenWidth = 800;
     public static int screenHeight = 600;
     private static int initialNrOfAsteroids = 8;
-    private static Text scoreBoard = new Text(20,40,"Score: 0");
+    private static Text scoreBoard = new Text(20, 40, "Score: 0");
     private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
     private static AtomicInteger score = new AtomicInteger();
 
@@ -119,6 +119,14 @@ public class App extends Application {
                 asteroids.removeAll(asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())
                         .collect(Collectors.toList()));
+
+                if (Math.random() < 0.005) {
+                    Asteroid asteroid = new Asteroid(screenWidth, screenHeight);
+                    if (!asteroid.collide(player)) {
+                        asteroids.add(asteroid);
+                        canvas.getChildren().add(asteroid.getEntity());
+                    }
+                }
 
             }
 
