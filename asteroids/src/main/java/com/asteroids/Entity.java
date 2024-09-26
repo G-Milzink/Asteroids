@@ -65,4 +65,12 @@ public class Entity {
         return collisionArea.getBoundsInLocal().getWidth() != -1;
     }
 
+    public Point2D getMovement() {
+        return movement;
+    }
+
+    public void setMovement(Point2D movement) {
+        this.movement = movement;
+    }
+
 }
