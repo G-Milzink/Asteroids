@@ -10,13 +10,15 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene view;
-    private static Pane  pane;
+    private static Pane  canvas;
 
     @Override
     public void start(Stage window) throws Exception {
         //Setup main view:
-        pane = new Pane();
-        view = new Scene(pane);
+        canvas = new Pane();
+        canvas.setPrefSize(800, 600);
+        canvas.setStyle("-fx-background-color: black;");
+        view = new Scene(canvas);
 
 
 
