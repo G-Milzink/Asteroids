@@ -26,6 +26,7 @@ public class App extends Application {
     private static Text scoreBoard = new Text(20, 40, "Score: 0");
     private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
     private static AtomicInteger score = new AtomicInteger();
+    private static SimpleTimer bulletTimer = new SimpleTimer(.5);
 
     List<Bullet> bullets = new ArrayList<>();
     Ship player = new Ship(screenWidth / 2, screenHeight / 2);
@@ -37,7 +38,6 @@ public class App extends Application {
         canvas.setPrefSize(screenWidth, screenHeight);
         canvas.setStyle("-fx-background-color: black;");
 
-        
         scoreBoard.setFont(gameFont);
         scoreBoard.setFill(Color.WHITE);
         gameWorld = new Scene(canvas);
@@ -78,8 +78,12 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 3) {
-                    fireBullet();
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 5) {
+                    if (bulletTimer.hasTimedOut()) {
+                        fireBullet();
+                    }
+                    bulletTimer.increaseCount();
+
                 }
 
                 // Execute all movement:
