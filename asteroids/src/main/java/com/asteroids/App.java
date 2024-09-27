@@ -28,6 +28,7 @@ public class App extends Application {
     private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
     private static AtomicInteger score = new AtomicInteger();
     private static SimpleTimer bulletTimer = new SimpleTimer(.5);
+    private static AudioSystem audioSystem = new AudioSystem();
 
     List<Bullet> bullets = new ArrayList<>();
     Ship player = new Ship(screenWidth / 2, screenHeight / 2);
@@ -144,6 +145,7 @@ public class App extends Application {
 
     // Handle Bullets:
     public void fireBullet() {
+        audioSystem.bulletSound();
         Bullet bullet = new Bullet((int) player.getEntity().getTranslateX(),
                 (int) player.getEntity().getTranslateY());
 
