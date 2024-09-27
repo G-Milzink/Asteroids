@@ -35,7 +35,7 @@ public class SimpleTimer {
 
     public void reset() {
         this.currentCount = 0;
-        timedOut = false;
+        timedOut = true;
     }
 
 }
