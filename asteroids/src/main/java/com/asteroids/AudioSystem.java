@@ -9,9 +9,9 @@ public class AudioSystem {
     private AudioClip playerDeathSFX;
 
     public AudioSystem() {
-        this.bulletSFX = new AudioClip(getClass().getResource("/sfx/bullet.wav").toExternalForm());
-        this.asteroidDeathSFX = new AudioClip(getClass().getResource("/sfx/explosion.wav").toExternalForm());
-        this.playerDeathSFX = new AudioClip(getClass().getResource("/sfx/death.wav").toExternalForm());
+        this.bulletSFX = new AudioClip("file:asteroids/src/main/java/com/asteroids/sfx/bullet.wav");
+        this.asteroidDeathSFX = new AudioClip("file:asteroids/src/main/java/com/asteroids/sfx/explosion.wav");
+        this.playerDeathSFX = new AudioClip("file:asteroids/src/main/java/com/asteroids/sfx/death.wav");
     }
 
     public void bulletSound() {
