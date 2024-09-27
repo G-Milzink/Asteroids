@@ -9,7 +9,7 @@ public class SimpleTimer {
     public SimpleTimer(double maxCount) {
         this.maxCount = maxCount * 60;
         this.currentCount = 0;
-        this.timedOut = true;
+        this.timedOut = false;
     }
 
     public void setMaxCount(int maxCount) {
@@ -19,9 +19,9 @@ public class SimpleTimer {
     public void increaseCount() {
         if (!this.timedOut) {
             this.currentCount++;
-            if (this.currentCount >= this.maxCount) {
-                timedOut = true;
-            }
+        }
+        if (this.currentCount >= this.maxCount) {
+            timedOut = true;
         }
     }
 

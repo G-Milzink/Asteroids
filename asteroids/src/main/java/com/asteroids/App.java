@@ -78,12 +78,11 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 5) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 25) {
                     if (bulletTimer.hasTimedOut()) {
                         fireBullet();
                     }
                     bulletTimer.increaseCount();
-
                 }
 
                 // Execute all movement:
@@ -107,6 +106,9 @@ public class App extends Application {
                             asteroid.setAlive(false);
                         }
                     });
+
+                    
+
                     if (!bullet.isAlive()) {
                         scoreBoard.setText("Score: " + score.addAndGet(100));
                     }
