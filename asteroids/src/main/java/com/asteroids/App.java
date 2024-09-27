@@ -16,7 +16,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 public class App extends Application {
 
     private static Scene gameWorld;
@@ -80,11 +79,14 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 25) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 5) {
                     if (bulletTimer.hasTimedOut()) {
                         fireBullet();
                     }
                     bulletTimer.increaseCount();
+                } else {
+                    bulletTimer.reset();
+                    System.out.println("reset!");
                 }
 
                 // Execute all movement:
@@ -96,6 +98,7 @@ public class App extends Application {
                 // Ship collision:
                 asteroids.forEach(asteroid -> {
                     if (player.collide(asteroid)) {
+                        audioSystem.playerDeathSound();
                         stop();
                     }
                 });
@@ -108,8 +111,6 @@ public class App extends Application {
                             asteroid.setAlive(false);
                         }
                     });
-
-                    
 
                     if (!bullet.isAlive()) {
                         scoreBoard.setText("Score: " + score.addAndGet(100));
@@ -125,7 +126,9 @@ public class App extends Application {
 
                 asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())
-                        .forEach(asteroid -> canvas.getChildren().remove(asteroid.getEntity()));
+                        .forEach(asteroid -> {canvas.getChildren().remove(asteroid.getEntity());
+                        audioSystem.asteroidSound();
+                        });
                 asteroids.removeAll(asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())
                         .collect(Collectors.toList()));
