@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,10 +35,11 @@ public class App extends Application {
         // Setup main view:
         canvas = new Pane();
         canvas.setPrefSize(screenWidth, screenHeight);
-        canvas.setStyle("-fx-background-color: white;");
+        canvas.setStyle("-fx-background-color: black;");
 
+        
         scoreBoard.setFont(gameFont);
-
+        scoreBoard.setFill(Color.WHITE);
         gameWorld = new Scene(canvas);
 
         // Initialize an asteroid:

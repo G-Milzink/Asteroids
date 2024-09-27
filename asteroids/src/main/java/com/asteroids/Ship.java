@@ -1,11 +1,14 @@
 package com.asteroids;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Ship extends Entity {
 
+
     public Ship(int x, int y) {
         super(new Polygon(-10,-10,20,0,-10,10), x, y);
+        this.getEntity().setFill(Color.LIGHTSLATEGRAY);
     }
 
 }
