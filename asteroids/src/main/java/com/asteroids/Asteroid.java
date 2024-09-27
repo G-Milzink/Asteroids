@@ -2,15 +2,19 @@ package com.asteroids;
 
 import java.util.Random;
 
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+
+import javafx.scene.paint.ImagePattern;
 
 public class Asteroid extends Entity {
 
     private double rotationalMovement;
+    private Image texture = new Image("file:asteroids/src/main/java/com/asteroids/img/asteroid_texture.jpg");
+    private ImagePattern imagePattern = new ImagePattern(texture);
 
     public Asteroid(int x, int y) {
         super(new PolygonFactory().createPolygon(), x, y);
-        this.getEntity().setFill(Color.GREY);
+        this.getEntity().setFill(imagePattern);
 
         Random rnd = new Random();
 
