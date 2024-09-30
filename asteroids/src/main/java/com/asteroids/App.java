@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene gameWorld;
+    private static BorderPane canvasWrapper;
     private static Pane canvas;
     public static int screenWidth = 800;
     public static int screenHeight = 600;
@@ -29,7 +31,7 @@ public class App extends Application {
     private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
     private static AtomicInteger score = new AtomicInteger();
     private static SimpleTimer bulletTimer = new SimpleTimer(0.3);
-    private static AudioSystem audioSystem = new AudioSystem();
+    private static SFXSystem audioSystem = new SFXSystem();
 
     private static Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static ImageView space = new ImageView(spaceImage);
@@ -46,7 +48,11 @@ public class App extends Application {
 
         scoreBoard.setFont(gameFont);
         scoreBoard.setFill(Color.WHITE);
-        gameWorld = new Scene(canvas);
+        canvasWrapper = new BorderPane();
+        canvasWrapper.setCenter(canvas);
+        gameWorld = new Scene(canvasWrapper);
+
+
 
         // Initialize an asteroid:
         List<Asteroid> asteroids = new ArrayList<>();
@@ -67,6 +73,7 @@ public class App extends Application {
 
         // Assign view to window and show window:
         window.setScene(gameWorld);
+        window.setFullScreen(true);
         window.show();
 
         new AnimationTimer() {
@@ -166,6 +173,8 @@ public class App extends Application {
 
         canvas.getChildren().add(bullet.getEntity());
     }
+
+    //Handle Collisions:
 
     public static void main(String[] args) {
         launch();
