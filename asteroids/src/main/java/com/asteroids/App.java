@@ -28,11 +28,10 @@ public class App extends Application {
     private static Text scoreBoard = new Text(20, 40, "Score: 0");
     private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
     private static AtomicInteger score = new AtomicInteger();
-    private static SimpleTimer bulletTimer = new SimpleTimer(0.5);
+    private static SimpleTimer bulletTimer = new SimpleTimer(0.3);
     private static AudioSystem audioSystem = new AudioSystem();
     private static Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static ImageView space = new ImageView(spaceImage);
-
 
     List<Bullet> bullets = new ArrayList<>();
     Ship player = new Ship(screenWidth / 2, screenHeight / 2);
@@ -73,6 +72,7 @@ public class App extends Application {
 
             @Override
             public void handle(long now) {
+                
                 if (animationControl.isKeyPressed(KeyCode.LEFT)) {
                     player.turnLeft();
                 }
@@ -85,14 +85,13 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() < 5) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE)) {
                     if (bulletTimer.hasTimedOut()) {
                         fireBullet();
-                    }
-                    bulletTimer.increaseCount();
-                } else {
-                    bulletTimer.reset();
+                        bulletTimer.reset();
+                    } 
                 }
+                bulletTimer.increaseCount();
 
                 // Execute all movement:
                 player.move();
@@ -131,8 +130,9 @@ public class App extends Application {
 
                 asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())
-                        .forEach(asteroid -> {canvas.getChildren().remove(asteroid.getEntity());
-                        audioSystem.asteroidSound();
+                        .forEach(asteroid -> {
+                            canvas.getChildren().remove(asteroid.getEntity());
+                            audioSystem.asteroidSound();
                         });
                 asteroids.removeAll(asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())

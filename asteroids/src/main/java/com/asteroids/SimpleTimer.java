@@ -27,7 +27,6 @@ public class SimpleTimer {
 
     public boolean hasTimedOut() {
         if (this.timedOut) {
-            this.reset();
             return true;
         } else
             return false;
@@ -35,7 +34,11 @@ public class SimpleTimer {
 
     public void reset() {
         this.currentCount = 0;
-        timedOut = true;
+        timedOut = false;
+    }
+
+    public void debug() {
+        System.out.println("timed out: " + timedOut + ", count: " +currentCount);
     }
 
 }

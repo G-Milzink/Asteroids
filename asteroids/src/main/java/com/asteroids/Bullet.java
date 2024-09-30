@@ -10,4 +10,28 @@ public class Bullet extends Entity {
         this.getEntity().setFill(Color.RED);
     }
 
+    @Override
+    public void move() {
+        this.getEntity().setTranslateX(this.getEntity().getTranslateX() + this.getMovement().getX());
+        this.getEntity().setTranslateY(this.getEntity().getTranslateY() + this.getMovement().getY());
+
+        if (this.getEntity().getTranslateX() < 0) {
+            this.setAlive(false);
+        }
+
+        if (this.getEntity().getTranslateX() > App.screenWidth) {
+            this.setAlive(false);
+
+        }
+
+        if (this.getEntity().getTranslateY() < 0) {
+            this.setAlive(false);
+
+        }
+
+        if (this.getEntity().getTranslateY() > App.screenHeight) {
+            this.setAlive(false);
+
+        }
+    }
 }
