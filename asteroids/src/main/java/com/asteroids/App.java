@@ -30,6 +30,7 @@ public class App extends Application {
     private static AtomicInteger score = new AtomicInteger();
     private static SimpleTimer bulletTimer = new SimpleTimer(0.3);
     private static AudioSystem audioSystem = new AudioSystem();
+
     private static Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static ImageView space = new ImageView(spaceImage);
 
@@ -72,7 +73,7 @@ public class App extends Application {
 
             @Override
             public void handle(long now) {
-                
+
                 if (animationControl.isKeyPressed(KeyCode.LEFT)) {
                     player.turnLeft();
                 }
@@ -85,11 +86,11 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE)) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() <= 3) {
                     if (bulletTimer.hasTimedOut()) {
                         fireBullet();
                         bulletTimer.reset();
-                    } 
+                    }
                 }
                 bulletTimer.increaseCount();
 

@@ -19,17 +19,14 @@ public class AudioSystem {
     }
 
     public void bulletSound() {
-        bulletSFX.stop();
         bulletSFX.play();
     }
 
     public void asteroidSound() {
-        asteroidDeathSFX.stop();
         asteroidDeathSFX.play();
     }
 
     public void playerDeathSound() {
-        playerDeathSFX.stop();
         playerDeathSFX.play();
     }
 

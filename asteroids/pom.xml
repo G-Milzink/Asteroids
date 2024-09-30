@@ -26,6 +26,11 @@
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>soundmanager2</artifactId>
+            <version>2.97a.20131201-2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
