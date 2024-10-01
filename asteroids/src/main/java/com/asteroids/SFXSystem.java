@@ -70,6 +70,7 @@ public class SFXSystem {
             playerDeathSFX.start();
         }
     }
+    
     public void levelUpSound() {
         if (levelUpSFX != null) {
             levelUpSFX.stop();
