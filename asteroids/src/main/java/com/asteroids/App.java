@@ -32,6 +32,7 @@ public class App extends Application {
     private static AtomicInteger score = new AtomicInteger();
     private static SimpleTimer bulletTimer = new SimpleTimer(0.3);
     private static SFXSystem audioSystem = new SFXSystem();
+    private static double asteroidSpawnInterval = 0.005;
 
     private static Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static ImageView space = new ImageView(spaceImage);
@@ -71,7 +72,6 @@ public class App extends Application {
 
         // Assign view to window and show window:
         window.setScene(gameWorld);
-        window.setResizable(false);
         window.show();
 
         new AnimationTimer() {
@@ -123,6 +123,7 @@ public class App extends Application {
                             // Check level status and play lvl up sound if needed:
                             if (score.get() > 0 && score.get() % 1000 == 0) {
                                 audioSystem.levelUpSound();
+                                asteroidSpawnInterval *= 2.0;
                             }
                         }
                     });
@@ -146,8 +147,11 @@ public class App extends Application {
                         .filter(asteroid -> !asteroid.isAlive())
                         .collect(Collectors.toList()));
 
-                if (Math.random() < 0.005) {
+                // Spawn new asteroids:
+                if (Math.random() < asteroidSpawnInterval) {
                     Asteroid asteroid = new Asteroid(screenWidth, screenHeight);
+
+
                     if (!asteroid.collide(player)) {
                         asteroids.add(asteroid);
                         canvas.getChildren().add(asteroid.getEntity());
