@@ -9,7 +9,7 @@ public class PolygonFactory {
     public Polygon createPolygon() {
         Random rnd = new Random();
 
-        double size = 10 +  rnd.nextInt(20);
+        double size = 15 +  rnd.nextInt(15);
 
         Polygon polygon = new Polygon();
         double c1 = Math.cos(Math.PI * 2 / 5);

@@ -73,7 +73,6 @@ public class App extends Application {
 
         // Assign view to window and show window:
         window.setScene(gameWorld);
-        window.setFullScreen(true);
         window.show();
 
         new AnimationTimer() {

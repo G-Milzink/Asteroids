@@ -23,11 +23,11 @@ public class Entity {
     }
 
     public void turnLeft() {
-        this.entity.setRotate(this.entity.getRotate() - 5);
+        this.entity.setRotate(this.entity.getRotate() - 3.5);
     }
 
     public void turnRight() {
-        this.entity.setRotate(this.entity.getRotate() + 5);
+        this.entity.setRotate(this.entity.getRotate() + 3.5);
     }
 
     public void move() {
