@@ -10,6 +10,7 @@ public class SFXSystem {
     private Clip bulletSFX;
     private Clip asteroidDeathSFX;
     private Clip playerDeathSFX;
+    private Clip levelUpSFX;
 
     public SFXSystem() {
         try {
@@ -36,7 +37,14 @@ public class SFXSystem {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
-
+        try {
+            File levelUpSoundFile = new File("asteroids/src/main/resources/sfx/level_up.wav");
+            AudioInputStream levelUpStream = AudioSystem.getAudioInputStream(levelUpSoundFile);
+            this.levelUpSFX = AudioSystem.getClip();
+            this.levelUpSFX.open(levelUpStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void bulletSound() {
@@ -60,6 +68,13 @@ public class SFXSystem {
             playerDeathSFX.stop();
             playerDeathSFX.setFramePosition(0);
             playerDeathSFX.start();
+        }
+    }
+    public void levelUpSound() {
+        if (levelUpSFX != null) {
+            levelUpSFX.stop();
+            levelUpSFX.setFramePosition(0);
+            levelUpSFX.start();
         }
     }
 

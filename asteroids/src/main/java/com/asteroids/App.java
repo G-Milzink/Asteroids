@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene gameWorld;
-    private static BorderPane canvasWrapper;
+    private static StackPane canvasWrapper;
     private static Pane canvas;
     public static int screenWidth = 800;
     public static int screenHeight = 600;
@@ -48,11 +48,9 @@ public class App extends Application {
 
         scoreBoard.setFont(gameFont);
         scoreBoard.setFill(Color.WHITE);
-        canvasWrapper = new BorderPane();
-        canvasWrapper.setCenter(canvas);
+        canvasWrapper = new StackPane();
+        canvasWrapper.getChildren().add(canvas);
         gameWorld = new Scene(canvasWrapper);
-
-
 
         // Initialize asteroids:
         List<Asteroid> asteroids = new ArrayList<>();
@@ -73,6 +71,7 @@ public class App extends Application {
 
         // Assign view to window and show window:
         window.setScene(gameWorld);
+        window.setResizable(false);
         window.show();
 
         new AnimationTimer() {
@@ -120,12 +119,14 @@ public class App extends Application {
                         if (bullet.collide(asteroid)) {
                             bullet.setAlive(false);
                             asteroid.setAlive(false);
+                            scoreBoard.setText("Score: " + score.addAndGet(100));
+                            // Check level status and play lvl up sound if needed:
+                            if (score.get() > 0 && score.get() % 1000 == 0) {
+                                audioSystem.levelUpSound();
+                            }
                         }
                     });
 
-                    if (!bullet.isAlive()) {
-                        scoreBoard.setText("Score: " + score.addAndGet(100));
-                    }
                 });
 
                 bullets.stream()
@@ -172,9 +173,6 @@ public class App extends Application {
 
         canvas.getChildren().add(bullet.getEntity());
     }
-
-    
-
 
     public static void main(String[] args) {
         launch();
