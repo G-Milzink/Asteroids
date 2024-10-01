@@ -17,7 +17,6 @@ public class SFXSystem {
             AudioInputStream bulletStream = AudioSystem.getAudioInputStream(bulletSoundFile);
             this.bulletSFX = AudioSystem.getClip();
             this.bulletSFX.open(bulletStream);
-            this.bulletSFX.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }

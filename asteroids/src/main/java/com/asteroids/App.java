@@ -54,7 +54,7 @@ public class App extends Application {
 
 
 
-        // Initialize an asteroid:
+        // Initialize asteroids:
         List<Asteroid> asteroids = new ArrayList<>();
         for (int i = 0; i < initialNrOfAsteroids; i++) {
             Random rnd = new Random();
@@ -173,7 +173,8 @@ public class App extends Application {
         canvas.getChildren().add(bullet.getEntity());
     }
 
-    //Handle Collisions:
+    
+
 
     public static void main(String[] args) {
         launch();
