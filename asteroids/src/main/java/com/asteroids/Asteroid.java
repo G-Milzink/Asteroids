@@ -22,7 +22,7 @@ public class Asteroid extends Entity {
 
         super.getEntity().setRotate(rnd.nextInt(360));
 
-        int accelerationAmount = 2 + rnd.nextInt(15);
+        int accelerationAmount = 5 + rnd.nextInt(25);
         for (int i = 0; i < accelerationAmount; i++) {
             accelerate();
         }

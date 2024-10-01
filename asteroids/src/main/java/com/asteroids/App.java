@@ -33,6 +33,7 @@ public class App extends Application {
     private static SimpleTimer bulletTimer = new SimpleTimer(0.3);
     private static SFXSystem audioSystem = new SFXSystem();
     private static double asteroidSpawnInterval = 0.005;
+    private static double asteroidSpawnRateIncrease = 0.005;
 
     private static Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static ImageView space = new ImageView(spaceImage);
@@ -123,7 +124,7 @@ public class App extends Application {
                             // Check level status and play lvl up sound if needed:
                             if (score.get() > 0 && score.get() % 1000 == 0) {
                                 audioSystem.levelUpSound();
-                                asteroidSpawnInterval *= 2.0;
+                                asteroidSpawnInterval += asteroidSpawnRateIncrease;
                             }
                         }
                     });
@@ -133,6 +134,7 @@ public class App extends Application {
                 bullets.stream()
                         .filter(bullet -> !bullet.isAlive())
                         .forEach(bullet -> canvas.getChildren().remove(bullet.getEntity()));
+
                 bullets.removeAll(bullets.stream()
                         .filter(bullet -> !bullet.isAlive())
                         .collect(Collectors.toList()));
@@ -143,6 +145,7 @@ public class App extends Application {
                             canvas.getChildren().remove(asteroid.getEntity());
                             audioSystem.asteroidSound();
                         });
+                        
                 asteroids.removeAll(asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())
                         .collect(Collectors.toList()));
