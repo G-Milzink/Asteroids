@@ -2,21 +2,22 @@ package com.asteroids;
 
 import java.util.Random;
 
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
+
+// import javafx.scene.image.Image;
+// import javafx.scene.paint.ImagePattern;
 
 public class Asteroid extends Entity {
 
     private double rotationalMovement;
-    private Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/asteroid_texture.jpg");
-    private ImagePattern texture = new ImagePattern(image);
+    // private Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/asteroid_texture.jpg");
+    // private ImagePattern texture = new ImagePattern(image);
 
     private int baseSpeed;
 
     public Asteroid(int x, int y, int baseSpeed) {
         super(new PolygonFactory().createPolygon(), x, y);
-        this.getEntity().setFill(texture);
+        // this.getEntity().setFill(texture);
         this.getEntity().setStroke(Color.GREY);
         this.getEntity().setStrokeWidth(1.0);
         this.baseSpeed = baseSpeed;

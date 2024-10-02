@@ -7,7 +7,8 @@ public class BossCreature1 extends Entity {
 
     private static int size = 40;
     private static Polygon body = new Polygon(-size, -size, size, -size, size, size, -size, size);
-    private double rotationalMovement = 2.5;
+    private double rotationalMovement = 1.25;
+    private  int hitpoints = 10;
 
     public BossCreature1(int x, int y) {
         super(body, x, y);
@@ -17,7 +18,7 @@ public class BossCreature1 extends Entity {
         super.getEntity().setTranslateX(x);
         super.getEntity().setTranslateY(y);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             accelerate();
         }
     }
@@ -26,6 +27,14 @@ public class BossCreature1 extends Entity {
     public void move() {
         super.move();
         super.getEntity().setRotate(super.getEntity().getRotate() + rotationalMovement);
+    }
+
+    public void decreaseHitpoints() {
+        this.hitpoints--;
+    }
+
+    public int getHitpoints() {
+        return this.hitpoints;
     }
 
 }

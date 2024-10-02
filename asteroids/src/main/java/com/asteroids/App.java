@@ -30,10 +30,11 @@ public class App extends Application {
     private static AtomicInteger score = new AtomicInteger();
     private static Text scoreBoard = new Text(20, 40, "Score: 0");
     private static Font gameFont = new Font(STYLESHEET_MODENA, 40);
-    
+
     private static SimpleTimer bulletTimer = new SimpleTimer(0.2);
     private static SFXSystem audioSystem = new SFXSystem();
-    
+
+    private static boolean canSpawnAsteroids = true;
     private static int initialNrOfAsteroids = 10;
     private static double asteroidSpawnInterval = 0.005;
     private static double asteroidSpawnRateIncrease = 0.005;
@@ -42,10 +43,11 @@ public class App extends Application {
 
     private static int levelThreshhold = 1000;
     private static int bossLevel = 0;
-    private static int[] bossTriggerValues = {1000,5000,7000};
+    private static int[] bossTriggerValues = { 1000, 5000, 7000 };
 
-    Entity boss1 = null;
+    BossCreature1 boss1 = null;
 
+    List<Asteroid> asteroids;
 
     private static Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static ImageView space = new ImageView(spaceImage);
@@ -69,10 +71,11 @@ public class App extends Application {
         gameWorld = new Scene(canvasWrapper);
 
         // Initialize asteroids:
-        List<Asteroid> asteroids = new ArrayList<>();
+        asteroids = new ArrayList<>();
         for (int i = 0; i < initialNrOfAsteroids; i++) {
             Random rnd = new Random();
-            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight), asteroidBaseSpeed);
+            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
+                    asteroidBaseSpeed);
             asteroids.add(asteroid);
         }
 
@@ -119,11 +122,20 @@ public class App extends Application {
                 asteroids.forEach(asteroid -> asteroid.move());
                 bullets.forEach(bullet -> bullet.move());
 
-                //Boss movement:
+                // Handle boss 1:
                 if (boss1 != null) {
                     boss1.move();
+                    bullets.forEach(bullet -> {
+                        if (boss1.collide(bullet)) {
+                            bullet.setAlive(false);
+                            boss1.decreaseHitpoints();
+                        }
+                    });
+                    System.out.println(boss1.getHitpoints());
+                    if (boss1.getHitpoints() <= 0) {
+                        canvas.getChildren().remove(boss1.getEntity());
+                    }
                 }
-                
 
                 // Check for collisions:
                 // Ship collision:
@@ -174,13 +186,14 @@ public class App extends Application {
                         .collect(Collectors.toList()));
 
                 // Spawn new asteroids:
-                if (Math.random() < asteroidSpawnInterval) {
-                    Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
+                if (canSpawnAsteroids) {
+                    if (Math.random() < asteroidSpawnInterval) {
+                        Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
 
-
-                    if (!asteroid.collide(player)) {
-                        asteroids.add(asteroid);
-                        canvas.getChildren().add(asteroid.getEntity());
+                        if (!asteroid.collide(player)) {
+                            asteroids.add(asteroid);
+                            canvas.getChildren().add(asteroid.getEntity());
+                        }
                     }
                 }
 
@@ -208,8 +221,11 @@ public class App extends Application {
     public void bossCheck(int score) {
         if (score == bossTriggerValues[0] && bossLevel == 0) {
             bossLevel++;
-            System.out.println("Spawn Boss: " + bossLevel);
-            boss1 = new BossCreature1(screenWidth/2, 75);
+            for (Asteroid asteroid : asteroids) {
+                asteroid.setAlive(false);
+                canSpawnAsteroids = false;
+            }
+            boss1 = new BossCreature1(screenWidth / 2, 75);
             canvas.getChildren().add(boss1.getEntity());
         }
         if (score == bossTriggerValues[1] && bossLevel == 1) {
@@ -221,7 +237,6 @@ public class App extends Application {
             System.out.println("Spawn Boss: " + bossLevel);
         }
     }
-
 
     public static void main(String[] args) {
         launch();
