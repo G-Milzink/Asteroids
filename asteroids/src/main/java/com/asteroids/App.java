@@ -43,7 +43,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 5000, 7000 };
+    private static final int[] BOSS_TRIGGER_VALUE = { 3000, 5000, 7000 };
 
     BossCreature1 boss1 = null;
 
@@ -71,13 +71,8 @@ public class App extends Application {
         gameWorld = new Scene(canvasWrapper);
 
         // Initialize asteroids:
-        asteroids = new ArrayList<>();
-        for (int i = 0; i < INITIAL_NR_OF_ASTEROIDS; i++) {
-            Random rnd = new Random();
-            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
-                    asteroidBaseSpeed);
-            asteroids.add(asteroid);
-        }
+        initializeAsteroids(INITIAL_NR_OF_ASTEROIDS);
+        
 
         // Initialize animationControl:
         AnimationControl animationControl = new AnimationControl(gameWorld);
@@ -135,6 +130,8 @@ public class App extends Application {
                     if (boss1.getHitpoints() <= 0) {
                         canvas.getChildren().remove(boss1.getEntity());
                         canSpawnAsteroids=true;
+                        initializeAsteroids(INITIAL_NR_OF_ASTEROIDS*3);
+                        boss1 = null;
                     }
                 }
 
@@ -236,6 +233,17 @@ public class App extends Application {
         if (score == BOSS_TRIGGER_VALUE[2] && bossLevel == 2) {
             bossLevel++;
             System.out.println("Spawn Boss: " + bossLevel);
+        }
+    }
+
+    public void initializeAsteroids(int amount) {
+        System.out.println("ASTEROIDS!");
+        asteroids = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            Random rnd = new Random();
+            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
+                    asteroidBaseSpeed);
+            asteroids.add(asteroid);
         }
     }
 
