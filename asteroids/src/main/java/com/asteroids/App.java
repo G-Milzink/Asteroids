@@ -209,7 +209,7 @@ public class App extends Application {
         if (score == bossTriggerValues[0] && bossLevel == 0) {
             bossLevel++;
             System.out.println("Spawn Boss: " + bossLevel);
-            boss1 = new BossCreature(screenWidth/2, 75);
+            boss1 = new BossCreature1(screenWidth/2, 75);
             canvas.getChildren().add(boss1.getEntity());
         }
         if (score == bossTriggerValues[1] && bossLevel == 1) {
