@@ -12,23 +12,25 @@ public class Asteroid extends Entity {
     private Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/asteroid_texture.jpg");
     private ImagePattern texture = new ImagePattern(image);
 
-    public Asteroid(int x, int y) {
+    private int baseSpeed;
+
+    public Asteroid(int x, int y, int baseSpeed) {
         super(new PolygonFactory().createPolygon(), x, y);
         this.getEntity().setFill(texture);
         this.getEntity().setStroke(Color.GREY);
         this.getEntity().setStrokeWidth(1.0);
+        this.baseSpeed = baseSpeed;
 
         Random rnd = new Random();
 
         super.getEntity().setRotate(rnd.nextInt(360));
 
-        int accelerationAmount = 5 + rnd.nextInt(25);
+        int accelerationAmount = this.baseSpeed + rnd.nextInt(25);
         for (int i = 0; i < accelerationAmount; i++) {
             accelerate();
         }
 
         this.rotationalMovement = 0.5 - rnd.nextDouble();
-
     }
 
     @Override
