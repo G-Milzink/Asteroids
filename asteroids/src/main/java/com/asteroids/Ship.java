@@ -7,8 +7,8 @@ import javafx.scene.shape.Polygon;
 
 public class Ship extends Entity {
 
-    private Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/metal_texture.png");
-    private ImagePattern texture = new ImagePattern(image);
+    private final Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/ship_texture.png");
+    private final ImagePattern texture = new ImagePattern(image);
 
     public Ship(int x, int y) {
         super(new Polygon(-15, -15, 30, 0, -15, 15), x, y);

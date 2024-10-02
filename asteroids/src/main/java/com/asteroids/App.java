@@ -43,7 +43,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = { 3000, 5000, 7000 };
+    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 5000, 7000 };
 
     BossCreature1 boss1 = null;
 
