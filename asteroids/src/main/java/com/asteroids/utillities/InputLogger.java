@@ -1,4 +1,4 @@
-package com.asteroids;
+package com.asteroids.utillities;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -11,6 +11,9 @@ import com.asteroids.entities.BossCreature1;
 import com.asteroids.entities.BossCreature2;
 import com.asteroids.entities.Bullet;
 import com.asteroids.entities.Ship;
+import com.asteroids.utillities.InputLogger;
+import com.asteroids.utillities.SFXSystem;
+import com.asteroids.utillities.SimpleTimer;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

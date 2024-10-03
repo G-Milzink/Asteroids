@@ -2,7 +2,7 @@ package com.asteroids.entities;
 
 import java.util.Random;
 
-import com.asteroids.PolygonFactory;
+import com.asteroids.utillities.PolygonFactory;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
