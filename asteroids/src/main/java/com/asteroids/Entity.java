@@ -6,7 +6,7 @@ import javafx.scene.shape.Shape;
 
 public class Entity {
 
-    private Polygon entity;
+    private final Polygon entity;
     private Point2D movement;
     private boolean alive = true;
 
