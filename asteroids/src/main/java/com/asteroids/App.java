@@ -43,9 +43,12 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = {1000, 5000, 7000};
+    private static final int[] BOSS_TRIGGER_VALUE = {1000, 2000, 7000};
 
     BossCreature1 boss1 = null;
+    BossCreature2 boss2 = null;
+
+    Boolean playerDied = false;
 
     List<Asteroid> asteroids = new ArrayList<>();
 
@@ -118,24 +121,14 @@ public class App extends Application {
 
                 // Handle boss 1:
                 if (boss1 != null) {
-                    boss1.move();
-                    bullets.forEach(bullet -> {
-                        if (boss1.collide(bullet)) {
-                            bullet.setAlive(false);
-                            boss1.decreaseHitpoints();
-                        }
-                    });
+                    handleBoss1();
+                    if (playerDied) {stop();}
+                }
 
-                    if (boss1.collide(player)) {
-                        audioSystem.playerDeathSound();
-                        stop();
-                    }
-
-                    if (boss1.getHitpoints() <= 0) {
-                        canvas.getChildren().remove(boss1.getEntity());
-                        canSpawnAsteroids = true;
-                        boss1 = null;
-                    }
+                // Handle boss 1:
+                if (boss2 != null) {
+                    handleBoss2();
+                    if (playerDied) {stop();}
                 }
 
                 // Check for collisions:
@@ -222,7 +215,7 @@ public class App extends Application {
         }
     }
 
-    // Handle bosses:
+    //Check if boss needs to spawn and do so if needed:
     public void bossCheck(int score) {
         if (score == BOSS_TRIGGER_VALUE[0] && bossLevel == 0) {
             bossLevel++;
@@ -235,11 +228,60 @@ public class App extends Application {
         }
         if (score == BOSS_TRIGGER_VALUE[1] && bossLevel == 1) {
             bossLevel++;
-            System.out.println("Spawn Boss: " + bossLevel);
+            for (Asteroid asteroid : asteroids) {
+                asteroid.setAlive(false);
+                canSpawnAsteroids = false;
+            }
+            boss2 = new BossCreature2(screenWidth / 2, 75);
+            canvas.getChildren().add(boss2.getEntity());
         }
         if (score == BOSS_TRIGGER_VALUE[2] && bossLevel == 2) {
             bossLevel++;
             System.out.println("Spawn Boss: " + bossLevel);
+        }
+    }
+
+    //handle boss 1:
+    public void handleBoss1() {
+        boss1.move();
+        bullets.forEach(bullet -> {
+            if (boss1.collide(bullet)) {
+                bullet.setAlive(false);
+                boss1.decreaseHitpoints();
+            }
+        });
+
+        if (boss1.collide(player)) {
+            audioSystem.playerDeathSound();
+            playerDied = true;
+        }
+
+        if (boss1.getHitpoints() <= 0) {
+            canvas.getChildren().remove(boss1.getEntity());
+            canSpawnAsteroids = true;
+            boss1 = null;
+        }
+    }
+
+    //handle boss2:
+    public void handleBoss2() {
+        boss2.move();
+        bullets.forEach(bullet -> {
+            if (boss2.collide(bullet)) {
+                bullet.setAlive(false);
+                boss2.decreaseHitpoints();
+            }
+        });
+
+        if (boss2.collide(player)) {
+            audioSystem.playerDeathSound();
+            playerDied = true;
+        }
+
+        if (boss2.getHitpoints() <= 0) {
+            canvas.getChildren().remove(boss2.getEntity());
+            canSpawnAsteroids = true;
+            boss2 = null;
         }
     }
 
