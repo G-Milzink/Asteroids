@@ -26,10 +26,7 @@ public class SimpleTimer {
     }
 
     public boolean hasTimedOut() {
-        if (this.timedOut) {
-            return true;
-        } else
-            return false;
+        return this.timedOut;
     }
 
     public void reset() {

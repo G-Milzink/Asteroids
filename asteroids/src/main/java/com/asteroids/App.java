@@ -1,5 +1,6 @@
 package com.asteroids;
 
+// Java:
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -57,15 +58,13 @@ public class App extends Application {
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
 
+    Ship player = new Ship(screenWidth / 2, screenHeight / 2);
     Boolean playerDied = false;
-
     List<Asteroid> asteroids = new ArrayList<>();
-
+    List<Bullet> bullets = new ArrayList<>();
+    
     private static final Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static final ImageView space = new ImageView(spaceImage);
-
-    List<Bullet> bullets = new ArrayList<>();
-    Ship player = new Ship(screenWidth / 2, screenHeight / 2);
 
     @Override
     public void start(Stage window) throws Exception {
@@ -128,20 +127,23 @@ public class App extends Application {
                 asteroids.forEach(asteroid -> asteroid.move());
                 bullets.forEach(bullet -> bullet.move());
 
-                // Handle boss 1:
+                // Handle bosses:
                 if (boss1 != null) {
                     handleBoss1();
-                    if (playerDied) {stop();}
+                    if (playerDied) {
+                        stop();
+                    }
                 }
 
-                // Handle boss 1:
                 if (boss2 != null) {
                     handleBoss2();
-                    if (playerDied) {stop();}
+                    if (playerDied) {
+                        stop();
+                    }
                 }
 
                 // Check for collisions:
-                // Ship collision:
+                // Ship<->Asteroid:
                 asteroids.forEach(asteroid -> {
                     if (player.collide(asteroid)) {
                         audioSystem.playerDeathSound();
@@ -149,20 +151,19 @@ public class App extends Application {
                     }
                 });
 
-                // Bullet Collisions:
+                // Bullet<->Asteroid:
                 bullets.forEach(bullet -> {
                     asteroids.forEach(asteroid -> {
                         if (bullet.collide(asteroid)) {
                             bullet.setAlive(false);
                             asteroid.setAlive(false);
                             scoreBoard.setText("Score: " + score.addAndGet(100));
-
-                            // Check level status and play lvl up sound if needed:
                             checkLevel();
                         }
                     });
                 });
 
+                // remove "dead" bullets...
                 bullets.stream()
                         .filter(bullet -> !bullet.isAlive())
                         .forEach(bullet -> canvas.getChildren().remove(bullet.getEntity()));
@@ -170,7 +171,7 @@ public class App extends Application {
                 bullets.removeAll(bullets.stream()
                         .filter(bullet -> !bullet.isAlive())
                         .collect(Collectors.toList()));
-
+                // remove "dead" asteroids...
                 asteroids.stream()
                         .filter(asteroid -> !asteroid.isAlive())
                         .forEach(asteroid -> {
@@ -199,7 +200,19 @@ public class App extends Application {
         }.start();
     }
 
-    // Handle Bullets:
+    // Handle spawning of initial asteroids:
+    public void initializeAsteroids(int amount) {
+        System.out.println("ASTEROIDS!");
+        this.asteroids.clear();
+        for (int i = 0; i < amount; i++) {
+            Random rnd = new Random();
+            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
+                    asteroidBaseSpeed);
+            this.asteroids.add(asteroid);
+        }
+    }
+
+    // Handle firing bullets:
     public void fireBullet() {
         audioSystem.bulletSound();
         Bullet bullet = new Bullet((int) player.getEntity().getTranslateX(),
@@ -294,20 +307,7 @@ public class App extends Application {
         }
     }
 
-    // Handle spawning of initial asteroids:
-    public void initializeAsteroids(int amount) {
-        System.out.println("ASTEROIDS!");
-        this.asteroids.clear();
-        for (int i = 0; i < amount; i++) {
-            Random rnd = new Random();
-            Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
-                    asteroidBaseSpeed);
-            this.asteroids.add(asteroid);
-        }
-    }
-
     public static void main(String[] args) {
         launch();
     }
-
 }
