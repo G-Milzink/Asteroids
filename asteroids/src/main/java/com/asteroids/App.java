@@ -43,11 +43,11 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 5000, 7000 };
+    private static final int[] BOSS_TRIGGER_VALUE = { 3000, 5000, 7000 };
 
     BossCreature1 boss1 = null;
 
-    List<Asteroid> asteroids;
+    List<Asteroid> asteroids = new ArrayList<>();
 
     private static final Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static final ImageView space = new ImageView(spaceImage);
@@ -104,13 +104,15 @@ public class App extends Application {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() <= 5) {
+                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() <= 10) {
                     if (bulletTimer.hasTimedOut()) {
                         fireBullet();
                         bulletTimer.reset();
                     }
                 }
                 bulletTimer.increaseCount();
+
+                System.out.println(asteroids.size());
 
                 // Execute all movement:
                 player.move();
@@ -130,7 +132,6 @@ public class App extends Application {
                     if (boss1.getHitpoints() <= 0) {
                         canvas.getChildren().remove(boss1.getEntity());
                         canSpawnAsteroids=true;
-                        initializeAsteroids(INITIAL_NR_OF_ASTEROIDS*3);
                         boss1 = null;
                     }
                 }
@@ -238,12 +239,12 @@ public class App extends Application {
 
     public void initializeAsteroids(int amount) {
         System.out.println("ASTEROIDS!");
-        asteroids = new ArrayList<>();
+        this.asteroids.clear();
         for (int i = 0; i < amount; i++) {
             Random rnd = new Random();
             Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
                     asteroidBaseSpeed);
-            asteroids.add(asteroid);
+            this.asteroids.add(asteroid);
         }
     }
 
