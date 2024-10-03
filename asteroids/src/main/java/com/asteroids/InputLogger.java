@@ -6,13 +6,13 @@ import java.util.Map;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-public class AnimationControl {
+public class InputLogger {
 
     private Map<KeyCode, Boolean> pressedKeys;
-    private Scene gameWorld;
+    private final Scene gameWorld;
 
 
-    public AnimationControl(Scene gameWorld) {
+    public InputLogger(Scene gameWorld) {
         this.pressedKeys = new HashMap<>();
         this.gameWorld = gameWorld;
 

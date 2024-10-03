@@ -74,8 +74,8 @@ public class App extends Application {
         initializeAsteroids(INITIAL_NR_OF_ASTEROIDS);
         
 
-        // Initialize animationControl:
-        AnimationControl animationControl = new AnimationControl(gameWorld);
+        // Initialize inputLogger:
+        InputLogger inputLogger = new InputLogger(gameWorld);
 
         // Add entities to canvas:
         canvas.getChildren().add(space);
@@ -92,19 +92,19 @@ public class App extends Application {
             @Override
             public void handle(long now) {
 
-                if (animationControl.isKeyPressed(KeyCode.LEFT)) {
+                if (inputLogger.isKeyPressed(KeyCode.LEFT)) {
                     player.turnLeft();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.RIGHT)) {
+                if (inputLogger.isKeyPressed(KeyCode.RIGHT)) {
                     player.turnRight();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.UP)) {
+                if (inputLogger.isKeyPressed(KeyCode.UP)) {
                     player.accelerate();
                 }
 
-                if (animationControl.isKeyPressed(KeyCode.SPACE) && bullets.size() <= 10) {
+                if (inputLogger.isKeyPressed(KeyCode.SPACE) && bullets.size() <= 10) {
                     if (bulletTimer.hasTimedOut()) {
                         fireBullet();
                         bulletTimer.reset();
