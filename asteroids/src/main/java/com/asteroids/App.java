@@ -44,19 +44,20 @@ public class App extends Application {
 
     private static final SimpleTimer bulletTimer = new SimpleTimer(0.2);
     private static final SimpleTimer boss1BulletTimer = new SimpleTimer(0.5);
+    private static final SimpleTimer boss2BulletTimer = new SimpleTimer(0.4);
 
     private static final SFXSystem audioSystem = new SFXSystem();
 
     private static boolean canSpawnAsteroids = true;
     private static final int INITIAL_NR_OF_ASTEROIDS = 10;
-    private static double asteroidSpawnInterval = 0.005;
-    private static final double ASTEROID_SPAWNRATE_INCREASE = 0.005;
+    private static double asteroidSpawnThreshold = 0.0075;
+    private static final double ASTEROID_SPAWNTHRESHOLD_MODIFIER = 0.0075;
     private static int asteroidBaseSpeed = 10;
     private static final int ASTEROID_BASESPEED_INCREMENT = 5;
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = {3000, 5000, 7000};
+    private static final int[] BOSS_TRIGGER_VALUE = {1000, 2000, 6000};
 
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
@@ -177,7 +178,6 @@ public class App extends Application {
                     }
                 });
 
-
                 // remove "dead" bullets...
                 bullets.stream()
                         .filter(bullet -> !bullet.isAlive())
@@ -200,7 +200,7 @@ public class App extends Application {
 
                 //Continuously spawn new asteroids:
                 if (canSpawnAsteroids) {
-                    if (Math.random() < asteroidSpawnInterval) {
+                    if (Math.random() < asteroidSpawnThreshold) {
                         Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
 
                         if (!asteroid.collide(player)) {
@@ -244,25 +244,47 @@ public class App extends Application {
 
     // Handle firing Bossbullets:
     public void fireBossBullet1() {
-        
+
         audioSystem.bulletSound();
         BossBullet bullet = new BossBullet((int) boss1.getEntity().getTranslateX(),
-                (int) boss1.getEntity().getTranslateY());
+                (int) boss1.getEntity().getTranslateY(), Color.RED);
 
         bullet.getEntity().setRotate(boss1.getEntity().getRotate());
         bossBullets.add(bullet);
 
         bullet.accelerate();
-        bullet.setMovement(bullet.getMovement().normalize().multiply(10));
+        bullet.setMovement(bullet.getMovement().normalize().multiply(5));
 
         canvas.getChildren().add(bullet.getEntity());
+    }
+
+    public void fireBossBullet2() {
+
+        audioSystem.bulletSound();
+        BossBullet bullet_a = new BossBullet((int) boss2.getEntity().getTranslateX(),
+                (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
+        bullet_a.getEntity().setRotate(boss2.getEntity().getRotate());
+        bossBullets.add(bullet_a);
+        bullet_a.accelerate();
+        bullet_a.setMovement(bullet_a.getMovement().normalize().multiply(8));
+
+        canvas.getChildren().add(bullet_a.getEntity());
+
+        BossBullet bullet_b = new BossBullet((int) boss2.getEntity().getTranslateX(),
+                (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
+                bullet_b.getEntity().setRotate(-(boss1.getEntity().getRotate()));
+        bossBullets.add(bullet_b);
+        bullet_b.accelerate();
+        bullet_b.setMovement(bullet_b.getMovement().normalize().multiply(8));
+
+        canvas.getChildren().add(bullet_b.getEntity());
     }
 
     //Check level status:
     public void checkLevel() {
         if (score.get() > 0 && score.get() % LEVEL_THRESHOLD == 0) {
             audioSystem.levelUpSound();
-            asteroidSpawnInterval += ASTEROID_SPAWNRATE_INCREASE;
+            asteroidSpawnThreshold += ASTEROID_SPAWNTHRESHOLD_MODIFIER;
             asteroidBaseSpeed += ASTEROID_BASESPEED_INCREMENT;
             bossCheck(score.get());
         }
@@ -358,6 +380,12 @@ public class App extends Application {
     //handle boss2:
     public void handleBoss2() {
         boss2.move();
+        if (boss2BulletTimer.hasTimedOut()) {
+            fireBossBullet2();
+            boss2BulletTimer.reset();
+        }
+        boss2BulletTimer.increaseCount();
+
         bullets.forEach(bullet -> {
             if (boss2.collide(bullet)) {
                 bullet.setAlive(false);

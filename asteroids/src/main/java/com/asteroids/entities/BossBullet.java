@@ -7,9 +7,9 @@ import javafx.scene.shape.Polygon;
 
 public class BossBullet extends Entity {
 
-    public BossBullet(int x, int y) {
+    public BossBullet(int x, int y, Color color) {
         super(new Polygon(5, -5, 5, 5, -5, 5, -5, -5), x, y);
-        this.getEntity().setFill(Color.RED);
+        this.getEntity().setFill(color);
     }
 
     @Override
