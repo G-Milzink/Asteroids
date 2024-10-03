@@ -25,7 +25,7 @@ public class SFXSystem {
             this.bulletSFX = AudioSystem.getClip();
             this.bulletSFX.open(bulletStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         try {
             File asteroidSoundFile = new File("asteroids/src/main/resources/sfx/explosion.wav");
@@ -33,7 +33,7 @@ public class SFXSystem {
             this.asteroidDeathSFX = AudioSystem.getClip();
             this.asteroidDeathSFX.open(asteroidStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         try {
             File deathSoundFile = new File("asteroids/src/main/resources/sfx/death.wav");
@@ -41,7 +41,7 @@ public class SFXSystem {
             this.playerDeathSFX = AudioSystem.getClip();
             this.playerDeathSFX.open(deathStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         try {
             File levelUpSoundFile = new File("asteroids/src/main/resources/sfx/level_up.wav");
@@ -49,7 +49,7 @@ public class SFXSystem {
             this.levelUpSFX = AudioSystem.getClip();
             this.levelUpSFX.open(levelUpStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         try {
@@ -58,7 +58,7 @@ public class SFXSystem {
             this.bossHitSFX = AudioSystem.getClip();
             this.bossHitSFX.open(bossHitStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         try {
@@ -67,7 +67,7 @@ public class SFXSystem {
             this.bossDeathSFX = AudioSystem.getClip();
             this.bossDeathSFX.open(bossDeathStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
     }
