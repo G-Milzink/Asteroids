@@ -5,11 +5,22 @@ import com.asteroids.App;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-public class Bullet extends Entity {
+public class BossBullet extends Entity {
 
-    public Bullet(int x, int y) {
-        super(new Polygon(2, -2, 2, 2, -2, 2, -2, -2), x, y);
-        this.getEntity().setFill(Color.LIGHTBLUE);
+    public BossBullet(int x, int y) {
+        super(new Polygon(5, -5, 5, 5, -5, 5, -5, -5), x, y);
+        this.getEntity().setFill(Color.RED);
+    }
+
+    @Override
+    public void accelerate() {
+        double changeX = Math.cos(Math.toRadians(this.getEntity().getRotate()));
+        double changeY = Math.sin(Math.toRadians(this.getEntity().getRotate()));
+
+        changeX *= 0.025;
+        changeY *= 0.025;
+
+        this.movement = this.movement.add(changeX, changeY);
     }
 
     @Override

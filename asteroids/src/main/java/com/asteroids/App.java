@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.asteroids.entities.Asteroid;
+import com.asteroids.entities.BossBullet;
 import com.asteroids.entities.BossCreature1;
 import com.asteroids.entities.BossCreature2;
 import com.asteroids.entities.Bullet;
@@ -42,6 +43,8 @@ public class App extends Application {
     private static final Font gameFont = new Font(STYLESHEET_MODENA, 40);
 
     private static final SimpleTimer bulletTimer = new SimpleTimer(0.2);
+    private static final SimpleTimer boss1BulletTimer = new SimpleTimer(0.5);
+
     private static final SFXSystem audioSystem = new SFXSystem();
 
     private static boolean canSpawnAsteroids = true;
@@ -62,6 +65,7 @@ public class App extends Application {
     Boolean playerDied = false;
     List<Asteroid> asteroids = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
+    List<BossBullet> bossBullets = new ArrayList<>();
 
     private static final Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static final ImageView space = new ImageView(spaceImage);
@@ -127,6 +131,7 @@ public class App extends Application {
                 player.move();
                 asteroids.forEach(asteroid -> asteroid.move());
                 bullets.forEach(bullet -> bullet.move());
+                bossBullets.forEach(bullet -> bullet.move());
 
                 // Handle bosses:
                 if (boss1 != null) {
@@ -163,6 +168,15 @@ public class App extends Application {
                         }
                     });
                 });
+
+                // Player <-> BossBullet
+                bossBullets.forEach(bullet -> {
+                    if (bullet.collide(player)) {
+                        audioSystem.playerDeathSound();
+                        stop();
+                    }
+                });
+
 
                 // remove "dead" bullets...
                 bullets.stream()
@@ -224,6 +238,22 @@ public class App extends Application {
 
         bullet.accelerate();
         bullet.setMovement(bullet.getMovement().normalize().multiply(3));
+
+        canvas.getChildren().add(bullet.getEntity());
+    }
+
+    // Handle firing Bossbullets:
+    public void fireBossBullet1() {
+        
+        audioSystem.bulletSound();
+        BossBullet bullet = new BossBullet((int) boss1.getEntity().getTranslateX(),
+                (int) boss1.getEntity().getTranslateY());
+
+        bullet.getEntity().setRotate(boss1.getEntity().getRotate());
+        bossBullets.add(bullet);
+
+        bullet.accelerate();
+        bullet.setMovement(bullet.getMovement().normalize().multiply(10));
 
         canvas.getChildren().add(bullet.getEntity());
     }
@@ -297,6 +327,12 @@ public class App extends Application {
     //handle boss 1:
     public void handleBoss1() {
         boss1.move();
+        if (boss1BulletTimer.hasTimedOut()) {
+            fireBossBullet1();
+            boss1BulletTimer.reset();
+        }
+        boss1BulletTimer.increaseCount();
+
         bullets.forEach(bullet -> {
             if (boss1.collide(bullet)) {
                 bullet.setAlive(false);
