@@ -53,7 +53,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = {1000, 2000, 7000};
+    private static final int[] BOSS_TRIGGER_VALUE = {3000, 5000, 7000};
 
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
@@ -62,12 +62,13 @@ public class App extends Application {
     Boolean playerDied = false;
     List<Asteroid> asteroids = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
-    
+
     private static final Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static final ImageView space = new ImageView(spaceImage);
 
     @Override
     public void start(Stage window) throws Exception {
+
         // Setup main view:
         canvas = new Pane();
         canvas.setPrefSize(screenWidth, screenHeight);
@@ -237,6 +238,34 @@ public class App extends Application {
         }
     }
 
+    public int[] pickSpawnLocation() {
+        Random rnd = new Random();
+        int choice = rnd.nextInt(4);
+        int[] result = new int[2];
+        switch (choice) {
+            case 0:
+                result[0] = screenWidth / 2;
+                result[1] = 75;
+                break;
+            case 1:
+                result[0] = screenWidth / 2;
+                result[1] = screenHeight - 75;
+                break;
+            case 2:
+                result[0] = 75;
+                result[1] = screenHeight / 2;
+                break;
+            case 3:
+                result[0] = screenWidth - 75;
+                result[1] = screenHeight / 2;
+                break;
+            default:
+                break;
+        }
+
+        return result;
+    }
+
     //Check if boss needs to spawn and do so if needed:
     public void bossCheck(int score) {
         if (score == BOSS_TRIGGER_VALUE[0] && bossLevel == 0) {
@@ -245,7 +274,8 @@ public class App extends Application {
                 asteroid.setAlive(false);
                 canSpawnAsteroids = false;
             }
-            boss1 = new BossCreature1(screenWidth / 2, 75);
+            int[] spawnXY = pickSpawnLocation();
+            boss1 = new BossCreature1(spawnXY[0], spawnXY[1]);
             canvas.getChildren().add(boss1.getEntity());
         }
         if (score == BOSS_TRIGGER_VALUE[1] && bossLevel == 1) {
@@ -254,7 +284,8 @@ public class App extends Application {
                 asteroid.setAlive(false);
                 canSpawnAsteroids = false;
             }
-            boss2 = new BossCreature2(screenWidth / 2, 75);
+            int[] spawnXY = pickSpawnLocation();
+            boss2 = new BossCreature2(spawnXY[0], spawnXY[1]);
             canvas.getChildren().add(boss2.getEntity());
         }
         if (score == BOSS_TRIGGER_VALUE[2] && bossLevel == 2) {
