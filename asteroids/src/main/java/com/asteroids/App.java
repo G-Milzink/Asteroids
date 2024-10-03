@@ -112,8 +112,6 @@ public class App extends Application {
                 }
                 bulletTimer.increaseCount();
 
-                System.out.println(asteroids.size());
-
                 // Execute all movement:
                 player.move();
                 asteroids.forEach(asteroid -> asteroid.move());
@@ -128,7 +126,7 @@ public class App extends Application {
                             boss1.decreaseHitpoints();
                         }
                     });
-                    System.out.println(boss1.getHitpoints());
+
                     if (boss1.getHitpoints() <= 0) {
                         canvas.getChildren().remove(boss1.getEntity());
                         canSpawnAsteroids=true;
