@@ -1,6 +1,8 @@
-package com.asteroids;
+package com.asteroids.entities;
 
 import java.util.Random;
+
+import com.asteroids.PolygonFactory;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;

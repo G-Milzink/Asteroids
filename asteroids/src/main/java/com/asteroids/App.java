@@ -6,6 +6,12 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import com.asteroids.entities.Asteroid;
+import com.asteroids.entities.BossCreature1;
+import com.asteroids.entities.BossCreature2;
+import com.asteroids.entities.Bullet;
+import com.asteroids.entities.Ship;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;

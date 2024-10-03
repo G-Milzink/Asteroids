@@ -1,4 +1,4 @@
-package com.asteroids;
+package com.asteroids.entities;
 
 import java.util.Random;
 

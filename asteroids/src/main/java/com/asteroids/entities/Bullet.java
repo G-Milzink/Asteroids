@@ -1,4 +1,6 @@
-package com.asteroids;
+package com.asteroids.entities;
+
+import com.asteroids.App;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
