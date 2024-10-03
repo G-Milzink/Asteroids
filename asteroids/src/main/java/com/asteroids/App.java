@@ -43,7 +43,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = { 3000, 5000, 7000 };
+    private static final int[] BOSS_TRIGGER_VALUE = {3000, 5000, 7000};
 
     BossCreature1 boss1 = null;
 
@@ -72,7 +72,6 @@ public class App extends Application {
 
         // Initialize asteroids:
         initializeAsteroids(INITIAL_NR_OF_ASTEROIDS);
-        
 
         // Initialize inputLogger:
         InputLogger inputLogger = new InputLogger(gameWorld);
@@ -129,7 +128,7 @@ public class App extends Application {
 
                     if (boss1.getHitpoints() <= 0) {
                         canvas.getChildren().remove(boss1.getEntity());
-                        canSpawnAsteroids=true;
+                        canSpawnAsteroids = true;
                         boss1 = null;
                     }
                 }
@@ -152,12 +151,7 @@ public class App extends Application {
                             scoreBoard.setText("Score: " + score.addAndGet(100));
 
                             // Check level status and play lvl up sound if needed:
-                            if (score.get() > 0 && score.get() % LEVEL_THRESHOLD == 0) {
-                                audioSystem.levelUpSound();
-                                asteroidSpawnInterval += ASTEROID_SPAWNRATE_INCREASE;
-                                asteroidBaseSpeed += ASTEROID_BASESPEED_INCREMENT;
-                                bossCheck(score.get());
-                            }
+                            checkLevel();
                         }
                     });
 
@@ -182,7 +176,7 @@ public class App extends Application {
                         .filter(asteroid -> !asteroid.isAlive())
                         .collect(Collectors.toList()));
 
-                // Spawn new asteroids:
+                //Continuously spawn new asteroids:
                 if (canSpawnAsteroids) {
                     if (Math.random() < asteroidSpawnInterval) {
                         Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
@@ -214,6 +208,16 @@ public class App extends Application {
         canvas.getChildren().add(bullet.getEntity());
     }
 
+    //Check level status:
+    public void checkLevel() {
+        if (score.get() > 0 && score.get() % LEVEL_THRESHOLD == 0) {
+            audioSystem.levelUpSound();
+            asteroidSpawnInterval += ASTEROID_SPAWNRATE_INCREASE;
+            asteroidBaseSpeed += ASTEROID_BASESPEED_INCREMENT;
+            bossCheck(score.get());
+        }
+    }
+
     // Handle bosses:
     public void bossCheck(int score) {
         if (score == BOSS_TRIGGER_VALUE[0] && bossLevel == 0) {
@@ -235,6 +239,7 @@ public class App extends Application {
         }
     }
 
+    // Handle spawning of initial asteroids:
     public void initializeAsteroids(int amount) {
         System.out.println("ASTEROIDS!");
         this.asteroids.clear();
