@@ -270,6 +270,7 @@ public class App extends Application {
             if (boss1.collide(bullet)) {
                 bullet.setAlive(false);
                 boss1.decreaseHitpoints();
+                audioSystem.bossHitSound();
             }
         });
 
@@ -279,6 +280,8 @@ public class App extends Application {
         }
 
         if (boss1.getHitpoints() <= 0) {
+            audioSystem.bossDeathSound();
+            audioSystem.asteroidSound();
             canvas.getChildren().remove(boss1.getEntity());
             canSpawnAsteroids = true;
             boss1 = null;
@@ -292,6 +295,7 @@ public class App extends Application {
             if (boss2.collide(bullet)) {
                 bullet.setAlive(false);
                 boss2.decreaseHitpoints();
+                audioSystem.bossHitSound();
             }
         });
 
@@ -301,6 +305,8 @@ public class App extends Application {
         }
 
         if (boss2.getHitpoints() <= 0) {
+            audioSystem.bossDeathSound();
+            audioSystem.asteroidSound();
             canvas.getChildren().remove(boss2.getEntity());
             canSpawnAsteroids = true;
             boss2 = null;

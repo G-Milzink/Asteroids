@@ -15,6 +15,8 @@ public class SFXSystem {
     private Clip asteroidDeathSFX;
     private Clip playerDeathSFX;
     private Clip levelUpSFX;
+    private Clip bossHitSFX;
+    private Clip bossDeathSFX;
 
     public SFXSystem() {
         try {
@@ -49,6 +51,25 @@ public class SFXSystem {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
+
+        try {
+            File bossHitSoundFile = new File("asteroids/src/main/resources/sfx/boss_hit.wav");
+            AudioInputStream bossHitStream = AudioSystem.getAudioInputStream(bossHitSoundFile);
+            this.bossHitSFX = AudioSystem.getClip();
+            this.bossHitSFX.open(bossHitStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            File bossDeathSoundFile = new File("asteroids/src/main/resources/sfx/boss_death.wav");
+            AudioInputStream bossDeathStream = AudioSystem.getAudioInputStream(bossDeathSoundFile);
+            this.bossDeathSFX = AudioSystem.getClip();
+            this.bossDeathSFX.open(bossDeathStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void bulletSound() {
@@ -74,12 +95,28 @@ public class SFXSystem {
             playerDeathSFX.start();
         }
     }
-    
+
     public void levelUpSound() {
         if (levelUpSFX != null) {
             levelUpSFX.stop();
             levelUpSFX.setFramePosition(0);
             levelUpSFX.start();
+        }
+    }
+
+    public void bossHitSound() {
+        if (bossHitSFX != null) {
+            bossHitSFX.stop();
+            bossHitSFX.setFramePosition(0);
+            bossHitSFX.start();
+        }
+    }
+
+    public void bossDeathSound() {
+        if (bossDeathSFX != null) {
+            bossDeathSFX.stop();
+            bossDeathSFX.setFramePosition(0);
+            bossDeathSFX.start();
         }
     }
 
