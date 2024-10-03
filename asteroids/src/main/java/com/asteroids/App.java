@@ -126,6 +126,11 @@ public class App extends Application {
                         }
                     });
 
+                    if (boss1.collide(player)) {
+                        audioSystem.playerDeathSound();
+                        stop();
+                    }
+
                     if (boss1.getHitpoints() <= 0) {
                         canvas.getChildren().remove(boss1.getEntity());
                         canSpawnAsteroids = true;
@@ -154,7 +159,6 @@ public class App extends Application {
                             checkLevel();
                         }
                     });
-
                 });
 
                 bullets.stream()

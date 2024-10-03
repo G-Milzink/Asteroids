@@ -33,9 +33,7 @@ public class BossCreature1 extends Entity {
             rotationalMovement = 1.25;
         }
 
-        for (int i = 0; i < 5; i++) {
-            accelerate();
-        }
+        
     }
 
     @Override
