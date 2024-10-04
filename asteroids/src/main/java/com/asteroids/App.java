@@ -57,7 +57,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = {1000, 2000, 6000};
+    private static final int[] BOSS_TRIGGER_VALUE = {2000, 4000, 6000};
 
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
@@ -229,7 +229,7 @@ public class App extends Application {
 
     // Handle firing bullets:
     public void fireBullet() {
-        audioSystem.bulletSound();
+        audioSystem.bossBulletSound();
         Bullet bullet = new Bullet((int) player.getEntity().getTranslateX(),
                 (int) player.getEntity().getTranslateY());
 
@@ -245,7 +245,7 @@ public class App extends Application {
     // Handle firing Bossbullets:
     public void fireBossBullet1() {
 
-        audioSystem.bulletSound();
+        audioSystem.bossBulletSound();
         BossBullet bullet = new BossBullet((int) boss1.getEntity().getTranslateX(),
                 (int) boss1.getEntity().getTranslateY(), Color.RED);
 
@@ -260,24 +260,24 @@ public class App extends Application {
 
     public void fireBossBullet2() {
 
-        audioSystem.bulletSound();
         BossBullet bullet_a = new BossBullet((int) boss2.getEntity().getTranslateX(),
                 (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
-        bullet_a.getEntity().setRotate(boss2.getEntity().getRotate());
+        bullet_a.getEntity().setRotate(-1*boss2.getEntity().getRotate());
         bossBullets.add(bullet_a);
         bullet_a.accelerate();
         bullet_a.setMovement(bullet_a.getMovement().normalize().multiply(8));
-
         canvas.getChildren().add(bullet_a.getEntity());
+        audioSystem.bulletSound();
 
         BossBullet bullet_b = new BossBullet((int) boss2.getEntity().getTranslateX(),
                 (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
-                bullet_b.getEntity().setRotate(-(boss1.getEntity().getRotate()));
+                bullet_b.getEntity().setRotate(-(boss2.getEntity().getRotate()));
         bossBullets.add(bullet_b);
         bullet_b.accelerate();
         bullet_b.setMovement(bullet_b.getMovement().normalize().multiply(8));
-
         canvas.getChildren().add(bullet_b.getEntity());
+        audioSystem.bulletSound();
+
     }
 
     //Check level status:

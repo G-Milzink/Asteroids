@@ -17,6 +17,7 @@ public class SFXSystem {
     private Clip levelUpSFX;
     private Clip bossHitSFX;
     private Clip bossDeathSFX;
+    private Clip bossBulletSFX;
 
     public SFXSystem() {
         try {
@@ -70,6 +71,15 @@ public class SFXSystem {
             System.out.println(e.getMessage());
         }
 
+        try {
+            File bossBulletSoundFile = new File("asteroids/src/main/resources/sfx/boss_shoot.wav");
+            AudioInputStream bossBulletStream = AudioSystem.getAudioInputStream(bossBulletSoundFile);
+            this.bossBulletSFX = AudioSystem.getClip();
+            this.bossBulletSFX.open(bossBulletStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public void bulletSound() {
@@ -117,6 +127,14 @@ public class SFXSystem {
             bossDeathSFX.stop();
             bossDeathSFX.setFramePosition(0);
             bossDeathSFX.start();
+        }
+    }
+
+    public void bossBulletSound() {
+        if (bossBulletSFX != null) {
+            bossBulletSFX.stop();
+            bossBulletSFX.setFramePosition(0);
+            bossBulletSFX.start();
         }
     }
 

@@ -12,7 +12,7 @@ public class BossCreature1 extends Entity {
     private static final int SIZE = 40;
     private static final Polygon body = new Polygon(-SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, SIZE);
     private final double rotationalMovement;
-    private  int hitpoints = 10;
+    private int hitpoints = 10;
 
     private final Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/metal_texture.png");
     private final ImagePattern texture = new ImagePattern(image);
@@ -33,7 +33,6 @@ public class BossCreature1 extends Entity {
             rotationalMovement = 1.25;
         }
 
-        
     }
 
     @Override
