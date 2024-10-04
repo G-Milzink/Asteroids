@@ -2,7 +2,6 @@ package com.asteroids.utillities;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,121 +20,61 @@ public class SFXSystem {
 
     public SFXSystem() {
         try {
-            File bulletSoundFile = new File("asteroids/src/main/resources/sfx/bullet.wav");
-            AudioInputStream bulletStream = AudioSystem.getAudioInputStream(bulletSoundFile);
-            this.bulletSFX = AudioSystem.getClip();
-            this.bulletSFX.open(bulletStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
+            bulletSFX = loadClip("asteroids/src/main/resources/sfx/bullet.wav");
+            asteroidDeathSFX = loadClip("asteroids/src/main/resources/sfx/explosion.wav");
+            playerDeathSFX = loadClip("asteroids/src/main/resources/sfx/death.wav");
+            levelUpSFX = loadClip("asteroids/src/main/resources/sfx/level_up.wav");
+            bossHitSFX = loadClip("asteroids/src/main/resources/sfx/boss_hit.wav");
+            bossDeathSFX = loadClip("asteroids/src/main/resources/sfx/boss_death.wav");
+            bossBulletSFX = loadClip("asteroids/src/main/resources/sfx/boss_shoot.wav");
+        } catch (Exception e) {
+            System.out.println("Error loading sound clips: " + e.getMessage());
         }
-        try {
-            File asteroidSoundFile = new File("asteroids/src/main/resources/sfx/explosion.wav");
-            AudioInputStream asteroidStream = AudioSystem.getAudioInputStream(asteroidSoundFile);
-            this.asteroidDeathSFX = AudioSystem.getClip();
-            this.asteroidDeathSFX.open(asteroidStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            File deathSoundFile = new File("asteroids/src/main/resources/sfx/death.wav");
-            AudioInputStream deathStream = AudioSystem.getAudioInputStream(deathSoundFile);
-            this.playerDeathSFX = AudioSystem.getClip();
-            this.playerDeathSFX.open(deathStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            File levelUpSoundFile = new File("asteroids/src/main/resources/sfx/level_up.wav");
-            AudioInputStream levelUpStream = AudioSystem.getAudioInputStream(levelUpSoundFile);
-            this.levelUpSFX = AudioSystem.getClip();
-            this.levelUpSFX.open(levelUpStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
-        }
+    }
 
-        try {
-            File bossHitSoundFile = new File("asteroids/src/main/resources/sfx/boss_hit.wav");
-            AudioInputStream bossHitStream = AudioSystem.getAudioInputStream(bossHitSoundFile);
-            this.bossHitSFX = AudioSystem.getClip();
-            this.bossHitSFX.open(bossHitStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
-        }
+    private Clip loadClip(String filePath) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File soundFile = new File(filePath);
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioStream);
+        return clip;
+    }
 
-        try {
-            File bossDeathSoundFile = new File("asteroids/src/main/resources/sfx/boss_death.wav");
-            AudioInputStream bossDeathStream = AudioSystem.getAudioInputStream(bossDeathSoundFile);
-            this.bossDeathSFX = AudioSystem.getClip();
-            this.bossDeathSFX.open(bossDeathStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            File bossBulletSoundFile = new File("asteroids/src/main/resources/sfx/boss_shoot.wav");
-            AudioInputStream bossBulletStream = AudioSystem.getAudioInputStream(bossBulletSoundFile);
-            this.bossBulletSFX = AudioSystem.getClip();
-            this.bossBulletSFX.open(bossBulletStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println(e.getMessage());
-        }
-
+    private void playSound(final Clip clip) {
+        new Thread(() -> {
+            if (clip != null) {
+                clip.stop();
+                clip.setFramePosition(0);
+                clip.start();
+            }
+        }).start();
     }
 
     public void bulletSound() {
-        if (bulletSFX != null) {
-            bulletSFX.stop();
-            bulletSFX.setFramePosition(0);
-            bulletSFX.start();
-        }
+        playSound(bulletSFX);
     }
 
     public void asteroidSound() {
-        if (asteroidDeathSFX != null) {
-            asteroidDeathSFX.stop();
-            asteroidDeathSFX.setFramePosition(0);
-            asteroidDeathSFX.start();
-        }
+        playSound(asteroidDeathSFX);
     }
 
     public void playerDeathSound() {
-        if (playerDeathSFX != null) {
-            playerDeathSFX.stop();
-            playerDeathSFX.setFramePosition(0);
-            playerDeathSFX.start();
-        }
+        playSound(playerDeathSFX);
     }
 
     public void levelUpSound() {
-        if (levelUpSFX != null) {
-            levelUpSFX.stop();
-            levelUpSFX.setFramePosition(0);
-            levelUpSFX.start();
-        }
+        playSound(levelUpSFX);
     }
 
     public void bossHitSound() {
-        if (bossHitSFX != null) {
-            bossHitSFX.stop();
-            bossHitSFX.setFramePosition(0);
-            bossHitSFX.start();
-        }
+        playSound(bossHitSFX);
     }
 
     public void bossDeathSound() {
-        if (bossDeathSFX != null) {
-            bossDeathSFX.stop();
-            bossDeathSFX.setFramePosition(0);
-            bossDeathSFX.start();
-        }
+        playSound(bossDeathSFX);
     }
 
     public void bossBulletSound() {
-        if (bossBulletSFX != null) {
-            bossBulletSFX.stop();
-            bossBulletSFX.setFramePosition(0);
-            bossBulletSFX.start();
-        }
+        playSound(bossBulletSFX);
     }
-
 }
