@@ -164,6 +164,13 @@ public class App extends Application {
                     }
                 }
 
+                if (boss3 != null) {
+                    handleBoss3();
+                    if (playerDied) {
+                        stop();
+                    }
+                }
+
                 // Check for collisions:
                 // Ship<->Asteroid:
                 asteroids.forEach(asteroid -> {
