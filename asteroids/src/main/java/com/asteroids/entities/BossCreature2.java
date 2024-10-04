@@ -9,8 +9,11 @@ import javafx.scene.shape.Polygon;
 
 public class BossCreature2 extends Entity {
 
-    private static final int SIZE = 60;
-    private static final Polygon body = new Polygon(-SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, SIZE);
+    private static final int poly_w = 10;
+    private static final int poly_l = 60;
+    private static final Polygon body = new Polygon(
+        poly_w, -poly_l, poly_w, -poly_w, poly_l, -poly_w, poly_l, poly_w, poly_w, poly_w, poly_w, poly_l,
+            -poly_w, poly_l, -poly_w, poly_w, -poly_l, poly_w, -poly_l, -poly_w, -poly_w, -poly_w, -poly_w, -poly_l);
     private final double rotationalMovement;
     private  int hitpoints = 20;
 

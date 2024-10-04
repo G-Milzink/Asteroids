@@ -11,6 +11,7 @@ import com.asteroids.entities.Asteroid;
 import com.asteroids.entities.BossBullet;
 import com.asteroids.entities.BossCreature1;
 import com.asteroids.entities.BossCreature2;
+import com.asteroids.entities.BossCreature3;
 import com.asteroids.entities.Bullet;
 import com.asteroids.entities.Ship;
 import com.asteroids.utillities.InputLogger;
@@ -44,7 +45,8 @@ public class App extends Application {
 
     private static final SimpleTimer bulletTimer = new SimpleTimer(0.3);
     private static final SimpleTimer boss1BulletTimer = new SimpleTimer(0.6);
-    private static final SimpleTimer boss2BulletTimer = new SimpleTimer(0.4);
+    private static final SimpleTimer boss2BulletTimer = new SimpleTimer(0.5);
+    private static final SimpleTimer boss3BulletTimer = new SimpleTimer(0.4);
 
     private static final SFXSystem audioSystem = new SFXSystem();
 
@@ -57,10 +59,11 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 2000, 6000 };
+    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 2000, 3000 };
 
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
+    BossCreature3 boss3 = null;
 
     Ship player = new Ship(screenWidth / 2, screenHeight / 2);
     Boolean playerDied = false;
@@ -270,7 +273,7 @@ public class App extends Application {
 
         BossBullet bullet_a = new BossBullet((int) boss2.getEntity().getTranslateX(),
                 (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
-        bullet_a.getEntity().setRotate(-1 * boss2.getEntity().getRotate());
+        bullet_a.getEntity().setRotate(-1 * (boss2.getEntity().getRotate()));
         bossBullets.add(bullet_a);
         bullet_a.accelerate();
         bullet_a.setMovement(bullet_a.getMovement().normalize().multiply(8));
@@ -279,7 +282,29 @@ public class App extends Application {
 
         BossBullet bullet_b = new BossBullet((int) boss2.getEntity().getTranslateX(),
                 (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
-        bullet_b.getEntity().setRotate(-(boss2.getEntity().getRotate()));
+        bullet_b.getEntity().setRotate((boss2.getEntity().getRotate()));
+        bossBullets.add(bullet_b);
+        bullet_b.accelerate();
+        bullet_b.setMovement(bullet_b.getMovement().normalize().multiply(8));
+        canvas.getChildren().add(bullet_b.getEntity());
+        audioSystem.bulletSound();
+
+    }
+
+    public void fireBossBullet3() {
+
+        BossBullet bullet_a = new BossBullet((int) boss3.getEntity().getTranslateX(),
+                (int) boss3.getEntity().getTranslateY(), Color.PURPLE);
+        bullet_a.getEntity().setRotate(-1 *( boss3.getEntity().getRotate()));
+        bossBullets.add(bullet_a);
+        bullet_a.accelerate();
+        bullet_a.setMovement(bullet_a.getMovement().normalize().multiply(8));
+        canvas.getChildren().add(bullet_a.getEntity());
+        audioSystem.bulletSound();
+
+        BossBullet bullet_b = new BossBullet((int) boss3.getEntity().getTranslateX(),
+                (int) boss3.getEntity().getTranslateY(), Color.PURPLE);
+        bullet_b.getEntity().setRotate((boss3.getEntity().getRotate()));
         bossBullets.add(bullet_b);
         bullet_b.accelerate();
         bullet_b.setMovement(bullet_b.getMovement().normalize().multiply(8));
@@ -350,7 +375,13 @@ public class App extends Application {
         }
         if (score == BOSS_TRIGGER_VALUE[2] && bossLevel == 2) {
             bossLevel++;
-            System.out.println("Spawn Boss: " + bossLevel);
+            for (Asteroid asteroid : asteroids) {
+                asteroid.setAlive(false);
+                canSpawnAsteroids = false;
+            }
+            int[] spawnXY = pickSpawnLocation();
+            boss3 = new BossCreature3(spawnXY[0], spawnXY[1], Color.BLUE);
+            canvas.getChildren().add(boss3.getEntity());
         }
     }
 
@@ -413,6 +444,37 @@ public class App extends Application {
             canvas.getChildren().remove(boss2.getEntity());
             canSpawnAsteroids = true;
             boss2 = null;
+        }
+    }
+
+    // handle boss3:
+    public void handleBoss3() {
+        boss3.move();
+        if (boss3BulletTimer.hasTimedOut()) {
+            fireBossBullet3();
+            boss3BulletTimer.reset();
+        }
+        boss3BulletTimer.increaseCount();
+
+        bullets.forEach(bullet -> {
+            if (boss3.collide(bullet)) {
+                bullet.setAlive(false);
+                boss3.decreaseHitpoints();
+                audioSystem.bossHitSound();
+            }
+        });
+
+        if (boss3.collide(player)) {
+            audioSystem.playerDeathSound();
+            playerDied = true;
+        }
+
+        if (boss3.getHitpoints() <= 0) {
+            audioSystem.bossDeathSound();
+            audioSystem.asteroidSound();
+            canvas.getChildren().remove(boss3.getEntity());
+            canSpawnAsteroids = true;
+            boss3 = null;
         }
     }
 
