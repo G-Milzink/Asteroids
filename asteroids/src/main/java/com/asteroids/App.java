@@ -147,10 +147,7 @@ public class App extends Application {
                 bulletTimer.increaseCount();
 
                 // Execute all movement:
-                player.move();
-                asteroids.forEach(asteroid -> asteroid.move());
-                bullets.forEach(bullet -> bullet.move());
-                bossBullets.forEach(bullet -> bullet.move());
+                updateMovement();
 
                 // Handle bosses:
                 if (boss1 != null) {
@@ -495,7 +492,13 @@ public class App extends Application {
         }
     }
 
-    //Update entity movement:
+    // Update entity movement:
+    public void updateMovement() {
+        player.move();
+        asteroids.forEach(asteroid -> asteroid.move());
+        bullets.forEach(bullet -> bullet.move());
+        bossBullets.forEach(bullet -> bullet.move());
+    }
 
     public static void main(String[] args) {
         launch();
