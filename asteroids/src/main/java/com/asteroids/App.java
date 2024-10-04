@@ -219,17 +219,7 @@ public class App extends Application {
                         .collect(Collectors.toList()));
 
                 // Continuously spawn new asteroids:
-                if (canSpawnAsteroids) {
-                    if (Math.random() < asteroidSpawnThreshold) {
-                        Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
-
-                        if (!asteroid.collide(player)) {
-                            asteroids.add(asteroid);
-                            canvas.getChildren().add(asteroid.getEntity());
-                        }
-                    }
-                }
-
+                spawnNewAsteroids();
             }
 
         }.start();
@@ -244,6 +234,20 @@ public class App extends Application {
             Asteroid asteroid = new Asteroid(rnd.nextInt(screenWidth / 3), rnd.nextInt(screenHeight),
                     asteroidBaseSpeed);
             this.asteroids.add(asteroid);
+        }
+    }
+
+    // Handle continuously spawning asteroids:
+    public void spawnNewAsteroids() {
+        if (canSpawnAsteroids) {
+            if (Math.random() < asteroidSpawnThreshold) {
+                Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
+
+                if (!asteroid.collide(player)) {
+                    asteroids.add(asteroid);
+                    canvas.getChildren().add(asteroid.getEntity());
+                }
+            }
         }
     }
 
@@ -304,7 +308,7 @@ public class App extends Application {
 
         BossBullet bullet_a = new BossBullet((int) boss3.getEntity().getTranslateX(),
                 (int) boss3.getEntity().getTranslateY(), Color.BLUE);
-        bullet_a.getEntity().setRotate(-1 *( boss3.getEntity().getRotate()));
+        bullet_a.getEntity().setRotate(-1 * (boss3.getEntity().getRotate()));
         bossBullets.add(bullet_a);
         bullet_a.accelerate();
         bullet_a.setMovement(bullet_a.getMovement().normalize().multiply(8));
@@ -490,6 +494,8 @@ public class App extends Application {
             boss3 = null;
         }
     }
+
+    //Update entity movement:
 
     public static void main(String[] args) {
         launch();
