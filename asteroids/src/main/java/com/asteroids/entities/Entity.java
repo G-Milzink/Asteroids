@@ -63,6 +63,16 @@ public class Entity {
         this.movement = this.movement.add(changeX, changeY);
     }
 
+    public void decelerate() {
+        double changeX = Math.cos(Math.toRadians(this.entity.getRotate()));
+        double changeY = Math.sin(Math.toRadians(this.entity.getRotate()));
+
+        changeX *= -0.025;
+        changeY *= -0.025;
+
+        this.movement = this.movement.add(changeX, changeY);
+    }
+
     public boolean collide(Entity other) {
         Shape collisionArea = Shape.intersect(this.entity, other.getEntity());
         return collisionArea.getBoundsInLocal().getWidth() != -1;

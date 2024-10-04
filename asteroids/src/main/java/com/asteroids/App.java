@@ -42,8 +42,8 @@ public class App extends Application {
     private static final Text scoreBoard = new Text(20, 40, "Score: 0");
     private static final Font gameFont = new Font(STYLESHEET_MODENA, 40);
 
-    private static final SimpleTimer bulletTimer = new SimpleTimer(0.2);
-    private static final SimpleTimer boss1BulletTimer = new SimpleTimer(0.5);
+    private static final SimpleTimer bulletTimer = new SimpleTimer(0.3);
+    private static final SimpleTimer boss1BulletTimer = new SimpleTimer(0.6);
     private static final SimpleTimer boss2BulletTimer = new SimpleTimer(0.4);
 
     private static final SFXSystem audioSystem = new SFXSystem();
@@ -57,7 +57,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = {2000, 4000, 6000};
+    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 2000, 6000 };
 
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
@@ -108,16 +108,24 @@ public class App extends Application {
             @Override
             public void handle(long now) {
 
-                if (inputLogger.isKeyPressed(KeyCode.LEFT)) {
+                if (inputLogger.isKeyPressed(KeyCode.LEFT) ||
+                        inputLogger.isKeyPressed(KeyCode.A)) {
                     player.turnLeft();
                 }
 
-                if (inputLogger.isKeyPressed(KeyCode.RIGHT)) {
+                if (inputLogger.isKeyPressed(KeyCode.RIGHT) ||
+                        inputLogger.isKeyPressed(KeyCode.D)) {
                     player.turnRight();
                 }
 
-                if (inputLogger.isKeyPressed(KeyCode.UP)) {
+                if (inputLogger.isKeyPressed(KeyCode.UP) ||
+                        inputLogger.isKeyPressed(KeyCode.W)) {
                     player.accelerate();
+                }
+
+                if (inputLogger.isKeyPressed(KeyCode.DOWN) ||
+                        inputLogger.isKeyPressed(KeyCode.S)) {
+                    player.decelerate();
                 }
 
                 if (inputLogger.isKeyPressed(KeyCode.SPACE) && bullets.size() <= 10) {
@@ -198,7 +206,7 @@ public class App extends Application {
                         .filter(asteroid -> !asteroid.isAlive())
                         .collect(Collectors.toList()));
 
-                //Continuously spawn new asteroids:
+                // Continuously spawn new asteroids:
                 if (canSpawnAsteroids) {
                     if (Math.random() < asteroidSpawnThreshold) {
                         Asteroid asteroid = new Asteroid(screenWidth, screenHeight, asteroidBaseSpeed);
@@ -262,7 +270,7 @@ public class App extends Application {
 
         BossBullet bullet_a = new BossBullet((int) boss2.getEntity().getTranslateX(),
                 (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
-        bullet_a.getEntity().setRotate(-1*boss2.getEntity().getRotate());
+        bullet_a.getEntity().setRotate(-1 * boss2.getEntity().getRotate());
         bossBullets.add(bullet_a);
         bullet_a.accelerate();
         bullet_a.setMovement(bullet_a.getMovement().normalize().multiply(8));
@@ -271,7 +279,7 @@ public class App extends Application {
 
         BossBullet bullet_b = new BossBullet((int) boss2.getEntity().getTranslateX(),
                 (int) boss2.getEntity().getTranslateY(), Color.PURPLE);
-                bullet_b.getEntity().setRotate(-(boss2.getEntity().getRotate()));
+        bullet_b.getEntity().setRotate(-(boss2.getEntity().getRotate()));
         bossBullets.add(bullet_b);
         bullet_b.accelerate();
         bullet_b.setMovement(bullet_b.getMovement().normalize().multiply(8));
@@ -280,7 +288,7 @@ public class App extends Application {
 
     }
 
-    //Check level status:
+    // Check level status:
     public void checkLevel() {
         if (score.get() > 0 && score.get() % LEVEL_THRESHOLD == 0) {
             audioSystem.levelUpSound();
@@ -318,7 +326,7 @@ public class App extends Application {
         return result;
     }
 
-    //Check if boss needs to spawn and do so if needed:
+    // Check if boss needs to spawn and do so if needed:
     public void bossCheck(int score) {
         if (score == BOSS_TRIGGER_VALUE[0] && bossLevel == 0) {
             bossLevel++;
@@ -327,7 +335,7 @@ public class App extends Application {
                 canSpawnAsteroids = false;
             }
             int[] spawnXY = pickSpawnLocation();
-            boss1 = new BossCreature1(spawnXY[0], spawnXY[1]);
+            boss1 = new BossCreature1(spawnXY[0], spawnXY[1], Color.RED);
             canvas.getChildren().add(boss1.getEntity());
         }
         if (score == BOSS_TRIGGER_VALUE[1] && bossLevel == 1) {
@@ -337,7 +345,7 @@ public class App extends Application {
                 canSpawnAsteroids = false;
             }
             int[] spawnXY = pickSpawnLocation();
-            boss2 = new BossCreature2(spawnXY[0], spawnXY[1]);
+            boss2 = new BossCreature2(spawnXY[0], spawnXY[1], Color.PURPLE);
             canvas.getChildren().add(boss2.getEntity());
         }
         if (score == BOSS_TRIGGER_VALUE[2] && bossLevel == 2) {
@@ -346,7 +354,7 @@ public class App extends Application {
         }
     }
 
-    //handle boss 1:
+    // handle boss 1:
     public void handleBoss1() {
         boss1.move();
         if (boss1BulletTimer.hasTimedOut()) {
@@ -377,7 +385,7 @@ public class App extends Application {
         }
     }
 
-    //handle boss2:
+    // handle boss2:
     public void handleBoss2() {
         boss2.move();
         if (boss2BulletTimer.hasTimedOut()) {

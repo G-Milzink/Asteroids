@@ -17,10 +17,10 @@ public class BossCreature1 extends Entity {
     private final Image image = new Image("file:asteroids/src/main/java/com/asteroids/img/metal_texture.png");
     private final ImagePattern texture = new ImagePattern(image);
 
-    public BossCreature1(int x, int y) {
+    public BossCreature1(int x, int y, Color color) {
         super(body, x, y);
         this.getEntity().setFill(texture);
-        this.getEntity().setStroke(Color.GREEN);
+        this.getEntity().setStroke(color);
         this.getEntity().setStrokeWidth(1.0);
         super.getEntity().setTranslateX(x);
         super.getEntity().setTranslateY(y);
