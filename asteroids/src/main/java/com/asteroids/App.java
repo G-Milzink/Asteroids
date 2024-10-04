@@ -59,7 +59,7 @@ public class App extends Application {
 
     private static final int LEVEL_THRESHOLD = 1000;
     private static int bossLevel = 0;
-    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 2000, 3000 };
+    private static final int[] BOSS_TRIGGER_VALUE = { 1000, 3000, 5000 };
 
     BossCreature1 boss1 = null;
     BossCreature2 boss2 = null;
@@ -112,22 +112,26 @@ public class App extends Application {
             public void handle(long now) {
 
                 if (inputLogger.isKeyPressed(KeyCode.LEFT) ||
-                        inputLogger.isKeyPressed(KeyCode.A)) {
+                        inputLogger.isKeyPressed(KeyCode.A) ||
+                        inputLogger.isKeyPressed(KeyCode.NUMPAD4)) {
                     player.turnLeft();
                 }
 
                 if (inputLogger.isKeyPressed(KeyCode.RIGHT) ||
-                        inputLogger.isKeyPressed(KeyCode.D)) {
+                        inputLogger.isKeyPressed(KeyCode.D) ||
+                        inputLogger.isKeyPressed(KeyCode.NUMPAD6)) {
                     player.turnRight();
                 }
 
                 if (inputLogger.isKeyPressed(KeyCode.UP) ||
-                        inputLogger.isKeyPressed(KeyCode.W)) {
+                        inputLogger.isKeyPressed(KeyCode.W) ||
+                        inputLogger.isKeyPressed(KeyCode.NUMPAD8)) {
                     player.accelerate();
                 }
 
                 if (inputLogger.isKeyPressed(KeyCode.DOWN) ||
-                        inputLogger.isKeyPressed(KeyCode.S)) {
+                        inputLogger.isKeyPressed(KeyCode.S) ||
+                        inputLogger.isKeyPressed(KeyCode.NUMPAD5)) {
                     player.decelerate();
                 }
 
@@ -238,7 +242,7 @@ public class App extends Application {
         }
     }
 
-    // Handle firing bullets:
+    // Handle firing player bullets:
     public void fireBullet() {
         audioSystem.bossBulletSound();
         Bullet bullet = new Bullet((int) player.getEntity().getTranslateX(),
@@ -294,7 +298,7 @@ public class App extends Application {
     public void fireBossBullet3() {
 
         BossBullet bullet_a = new BossBullet((int) boss3.getEntity().getTranslateX(),
-                (int) boss3.getEntity().getTranslateY(), Color.PURPLE);
+                (int) boss3.getEntity().getTranslateY(), Color.BLUE);
         bullet_a.getEntity().setRotate(-1 *( boss3.getEntity().getRotate()));
         bossBullets.add(bullet_a);
         bullet_a.accelerate();
@@ -303,7 +307,7 @@ public class App extends Application {
         audioSystem.bulletSound();
 
         BossBullet bullet_b = new BossBullet((int) boss3.getEntity().getTranslateX(),
-                (int) boss3.getEntity().getTranslateY(), Color.PURPLE);
+                (int) boss3.getEntity().getTranslateY(), Color.BLUE);
         bullet_b.getEntity().setRotate((boss3.getEntity().getRotate()));
         bossBullets.add(bullet_b);
         bullet_b.accelerate();
@@ -323,6 +327,7 @@ public class App extends Application {
         }
     }
 
+    // Randomize boss spawn locations:
     public int[] pickSpawnLocation() {
         Random rnd = new Random();
         int choice = rnd.nextInt(4);
@@ -410,6 +415,7 @@ public class App extends Application {
         if (boss1.getHitpoints() <= 0) {
             audioSystem.bossDeathSound();
             audioSystem.asteroidSound();
+            audioSystem.levelUpSound();
             canvas.getChildren().remove(boss1.getEntity());
             canSpawnAsteroids = true;
             boss1 = null;
@@ -441,6 +447,7 @@ public class App extends Application {
         if (boss2.getHitpoints() <= 0) {
             audioSystem.bossDeathSound();
             audioSystem.asteroidSound();
+            audioSystem.levelUpSound();
             canvas.getChildren().remove(boss2.getEntity());
             canSpawnAsteroids = true;
             boss2 = null;
@@ -472,6 +479,7 @@ public class App extends Application {
         if (boss3.getHitpoints() <= 0) {
             audioSystem.bossDeathSound();
             audioSystem.asteroidSound();
+            audioSystem.levelUpSound();
             canvas.getChildren().remove(boss3.getEntity());
             canSpawnAsteroids = true;
             boss3 = null;
