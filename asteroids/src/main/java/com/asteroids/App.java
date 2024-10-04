@@ -153,6 +153,7 @@ public class App extends Application {
                 if (boss1 != null) {
                     handleBoss1();
                     if (playerDied) {
+                        window.setScene(gameOver.gameOverScreen(score.get()));
                         stop();
                     }
                 }
@@ -160,6 +161,7 @@ public class App extends Application {
                 if (boss2 != null) {
                     handleBoss2();
                     if (playerDied) {
+                        window.setScene(gameOver.gameOverScreen(score.get()));
                         stop();
                     }
                 }
@@ -167,6 +169,7 @@ public class App extends Application {
                 if (boss3 != null) {
                     handleBoss3();
                     if (playerDied) {
+                        window.setScene(gameOver.gameOverScreen(score.get()));
                         stop();
                     }
                 }
