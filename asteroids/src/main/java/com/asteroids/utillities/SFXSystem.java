@@ -28,7 +28,7 @@ public class SFXSystem {
             bossDeathSFX = loadClip("asteroids/src/main/resources/sfx/boss_death.wav");
             bossBulletSFX = loadClip("asteroids/src/main/resources/sfx/boss_shoot.wav");
         } catch (Exception e) {
-            System.out.println("Error loading sound clips: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
