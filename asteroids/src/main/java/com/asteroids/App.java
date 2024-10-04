@@ -14,6 +14,7 @@ import com.asteroids.entities.BossCreature2;
 import com.asteroids.entities.BossCreature3;
 import com.asteroids.entities.Bullet;
 import com.asteroids.entities.Ship;
+import com.asteroids.utillities.GameOver;
 import com.asteroids.utillities.InputLogger;
 import com.asteroids.utillities.SFXSystem;
 import com.asteroids.utillities.SimpleTimer;
@@ -73,6 +74,8 @@ public class App extends Application {
 
     private static final Image spaceImage = new Image("file:asteroids/src/main/java/com/asteroids/img/space.jpg");
     private static final ImageView space = new ImageView(spaceImage);
+
+    private static GameOver gameOver = new GameOver();
 
     @Override
     public void start(Stage window) throws Exception {
@@ -169,6 +172,7 @@ public class App extends Application {
                 asteroids.forEach(asteroid -> {
                     if (player.collide(asteroid)) {
                         audioSystem.playerDeathSound();
+                        window.setScene(gameOver.gameOverScreen(score.get()));
                         stop();
                     }
                 });
@@ -189,6 +193,7 @@ public class App extends Application {
                 bossBullets.forEach(bullet -> {
                     if (bullet.collide(player)) {
                         audioSystem.playerDeathSound();
+                        window.setScene(gameOver.gameOverScreen(score.get()));
                         stop();
                     }
                 });
